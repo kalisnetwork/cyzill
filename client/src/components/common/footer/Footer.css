@@ -1,0 +1,52 @@
+.industry-footer {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 30px 0;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  flex: 1;
+  margin: 10px;
+  padding: 10px;
+  text-align: left;
+}
+
+.footer-heading {
+  font-size: 20px;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-list-item {
+  margin: 5px 0;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #000000;
+  transition: color 0.3s;
+}
+
+.footer-link:hover {
+  color: #007fff;
+}
+
+.footer-text {
+  margin: 0;
+}
+
+.copyright {
+  background-color: #bfbfbf;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+}

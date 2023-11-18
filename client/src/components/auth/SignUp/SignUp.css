@@ -1,0 +1,17 @@
+.valid::before {
+  content: "✓";
+  color: green;
+}
+
+.invalid::before {
+  content: "✗";
+  color: red;
+}
+
+.termsandconditions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  gap: 10px;
+}

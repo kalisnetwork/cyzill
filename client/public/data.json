@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Balanagar",
+    "location": "123 Main St",
+    "type": "Sale",
+    "price": 250000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sqfoot": 1200,
+    "postedOn": "5 days",
+    "image": "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": 2,
+    "title": "Hyderabad",
+    "location": "456 Elm St",
+    "type": "Buy",
+    "price": 350000,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "sqfoot": 1600,
+    "postedOn": "20 days",
+    "image": "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": 3,
+    "title": "Medchal",
+    "location": "789 Oak St",
+    "type": "Rent",
+    "price": 180000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "sqfoot": 1000,
+    "postedOn": "25 days",
+    "image": "https://images.pexels.com/photos/1127119/pexels-photo-1127119.jpeg"
+  },
+  {
+    "id": 4,
+    "title": "Quthbullapur",
+    "location": "804 Idpl St",
+    "type": "Rent",
+    "price": 420000,
+    "bedrooms": 2,
+    "bathrooms": 3,
+    "sqfoot": 1200,
+    "postedOn": "Just now",
+    "image": "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": 5,
+    "title": "Secundrabad",
+    "location": "967 Normal St ",
+    "type": "Buy",
+    "price": 920000,
+    "bedrooms": 6,
+    "bathrooms": 3,
+    "sqfoot": 2400,
+    "postedOn": "4 hours ago",
+    "image": "https://images.pexels.com/photos/3965528/pexels-photo-3965528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  }
+]
