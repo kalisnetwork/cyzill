@@ -1,62 +1,90 @@
 [
   {
     "id": 1,
-    "title": "Balanagar",
-    "location": "123 Main St",
+    "location": "123 Main Street, Chintal, Cherkupally colony hyderabad",
     "type": "Sale",
-    "price": 250000,
+    "price": "5,00,000",
+    "agent": "Srikanth Real Estates",
     "bedrooms": 3,
     "bathrooms": 2,
     "sqfoot": 1200,
-    "postedOn": "5 days",
-    "image": "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    "postedOn": "5 days ago",
+    "images": [
+      "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/3965528/pexels-photo-3965528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/164558/pexels-photo-164558.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1438832/pexels-photo-1438832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ]
   },
   {
     "id": 2,
-    "title": "Hyderabad",
-    "location": "456 Elm St",
-    "type": "Buy",
-    "price": 350000,
-    "bedrooms": 4,
-    "bathrooms": 3,
-    "sqfoot": 1600,
-    "postedOn": "20 days",
-    "image": "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    "location": "123 Main Street, Chintal, Cherkupally colony hyderabad",
+    "type": "Sale",
+    "price": "5,10,000",
+    "agent": "Srikanth Real Estates",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sqfoot": 1200,
+    "postedOn": "5 days ago",
+    "images": [
+      "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/3965528/pexels-photo-3965528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/164558/pexels-photo-164558.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1438832/pexels-photo-1438832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ]
   },
   {
     "id": 3,
-    "title": "Medchal",
-    "location": "789 Oak St",
-    "type": "Rent",
-    "price": 180000,
-    "bedrooms": 2,
-    "bathrooms": 1,
-    "sqfoot": 1000,
-    "postedOn": "25 days",
-    "image": "https://images.pexels.com/photos/1127119/pexels-photo-1127119.jpeg"
+    "location": "123 Main Street, Chintal, Cherkupally colony hyderabad",
+    "type": "Sale",
+    "price": "5,20,000",
+    "agent": "Srikanth Real Estates",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sqfoot": 1200,
+    "postedOn": "5 days ago",
+    "images": [
+      "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/3965528/pexels-photo-3965528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/164558/pexels-photo-164558.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1438832/pexels-photo-1438832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ]
   },
   {
     "id": 4,
-    "title": "Quthbullapur",
-    "location": "804 Idpl St",
-    "type": "Rent",
-    "price": 420000,
-    "bedrooms": 2,
-    "bathrooms": 3,
+    "location": "123 Main Street, Chintal, Cherkupally colony hyderabad",
+    "type": "Sale",
+    "price": "5,50,000",
+    "agent": "Srikanth Real Estates",
+    "bedrooms": 3,
+    "bathrooms": 2,
     "sqfoot": 1200,
-    "postedOn": "Just now",
-    "image": "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-  },
-  {
-    "id": 5,
-    "title": "Secundrabad",
-    "location": "967 Normal St ",
-    "type": "Buy",
-    "price": 920000,
-    "bedrooms": 6,
-    "bathrooms": 3,
-    "sqfoot": 2400,
-    "postedOn": "4 hours ago",
-    "image": "https://images.pexels.com/photos/3965528/pexels-photo-3965528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    "postedOn": "5 days ago",
+    "images": [
+      "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/3965528/pexels-photo-3965528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/164558/pexels-photo-164558.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/1438832/pexels-photo-1438832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    ]
   }
 ]

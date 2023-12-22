@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from '../../property/SearchBar/SearchBar';
+import SearchBar from '../../marketplace/SearchBar/SearchBar';
 
 const Hero = () => {
     const [searchResults, setSearchResults] = useState([]);
@@ -45,7 +45,7 @@ const Hero = () => {
                         <p className="text-lg md:text-xl lg:text-2xl mb-6">
                             Search for properties that match your criteria.
                         </p>
-                        <SearchBar onSearch={handleSearch} properties={properties} />
+                        <SearchBar onSearch={handleSearch} properties={properties} height="h-16" placeholderText="Enter a city, address or pincode" />
                     </div>
                 </div>
             </div>

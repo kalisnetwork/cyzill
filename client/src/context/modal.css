@@ -1,0 +1,38 @@
+.modal {
+  position: fixed;
+  top: 0;
+  right: 5%;
+  left: 5%;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.5s;
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(125, 125, 125, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: solid white;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

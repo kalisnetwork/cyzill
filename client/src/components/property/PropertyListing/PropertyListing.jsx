@@ -1,41 +1,152 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useReducer } from 'react';
+import Description from './steps/Description';
+import Media from './steps/Media';
+import Location from './steps/Location';
+import Details from './steps/Details';
+import Amenities from './steps/Amenities';
 
-const PropertyListingForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+const initialState = {
+    step: 1,
+    formData: {
+        description: '',
+        media: [],
+        location: '',
+        detail: '',
+        amenities: [],
+    },
+};
 
-    const onSubmit = (data) => {
-        console.log(data);
-        // Save form data
+function reducer(state, action) {
+    switch (action.type) {
+        case 'nextStep':
+            return { ...state, step: state.step + 1 };
+        case 'previousStep':
+            return { ...state, step: state.step - 1 };
+        case 'saveFormData':
+            return { ...state, formData: { ...state.formData, ...action.data } };
+        default:
+            throw new Error();
+    }
+}
+
+
+const PropertyListing = () => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const nextStep = () => {
+        if (state.step < Object.keys(stepComponents).length) {
+            dispatch({ type: 'nextStep' });
+        }
+    };
+    const previousStep = () => dispatch({ type: 'previousStep' });
+
+    const saveFormData = (data) => {
+        dispatch({ type: 'saveFormData', data });
+        console.log(state.formData);
+    };
+    useEffect(() => {
+        console.log(state.formData);
+    }, [state.formData]);
+
+
+    const stepComponents = {
+        1: Description,
+        2: Media,
+        3: Location,
+        4: Details,
+        5: Amenities,
     };
 
+    const StepComponent = stepComponents[state.step];
+
+    const stepNames = {
+        1: 'Description',
+        2: 'Media',
+        3: 'Location',
+        4: 'Details',
+        5: 'Amenities',
+    };
+    const isStepCompleted = () => {
+        switch (state.step) {
+            case 1:
+                return state.formData.description && state.formData.description.trim() !== '';
+            case 2:
+                return state.formData.media && state.formData.media.length > 0;
+            case 3:
+                return state.formData.location.lat !== '' && state.formData.location.lng !== '';
+            case 4:
+                return state.formData.bedrooms && state.formData.bathrooms && state.formData.coveredArea && state.formData.carpetArea && state.formData.constructionYear;
+            case 5:
+                return state.formData.amenities && state.formData.amenities.length > 0;
+            default:
+                return true;
+        }
+    };
+
+
+    const isLastStep = state.step === Object.keys(stepComponents).length;
+
+    const totalSteps = Object.keys(stepComponents).length;
+    const completionPercentage = Math.floor((state.step / totalSteps) * 100);
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <div>
-                <label className="font-medium">Personal Details</label>
-                <select
-                    {...register("personalDetails", { required: true })}
-                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-                >
-                    <option value="Owner">Owner</option>
-                    <option value="Agent">Agent</option>
-                </select>
-                {errors.personalDetails && <span>This field is required</span>}
+        <div className="p-10 relative">
+            <div className="steps">
+                <ol className="grid grid-cols-5 text-sm font-medium text-gray-500">
+                    {Object.keys(stepComponents).map((index) => (
+                        <li
+                            key={index}
+                            className={`relative flex justify-center ${state.step >= index ? 'text-blue-600' : 'text-gray-500'
+                                }`}
+                        >
+                            <span
+                                className={`absolute -bottom-[1.75rem] left-1/2 -translate-x-1/2 rounded-full ${state.step >= index
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-600 text-white'
+                                    }`}
+                            >
+                                <svg
+                                    className="h-5 w-5"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                            </span>
+
+                            <span className="hidden sm:block">
+                                {stepNames[index]}
+                            </span>
+                        </li>
+                    ))}
+                </ol>
+                <div className="mt-4 block h-1 w-full rounded-lg bg-gray-200 relative -z-10">
+                    <div
+                        className="absolute top-0 left-0 h-1 bg-blue-500"
+                        style={{ width: `${completionPercentage}%` }}
+                    />
+                </div>
+                <div />
             </div>
-            {/* Add other form fields in a similar way */}
-            <div>
-                <label className="font-medium">Photos</label>
-                <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    {...register("photos")}
-                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-                />
+            <StepComponent formData={state.formData} setFormData={saveFormData} saveFormData={saveFormData} />
+            <div className="flex justify-between">
+                {state.step !== 1 && (
+                    <button onClick={previousStep} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer">
+                        Previous
+                    </button>
+                )}
+                {!isLastStep && (
+                    <button onClick={nextStep} disabled={!isStepCompleted()} className={`bg-blue-500 text-white px-4 py-2 rounded-md ${isStepCompleted() ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}>
+                        Next
+                    </button>
+                )}
             </div>
-            <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded">Save</button>
-        </form>
+        </div>
     );
 };
 
-export default PropertyListingForm;
+export default PropertyListing;

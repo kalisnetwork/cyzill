@@ -1,11 +1,7 @@
 .property-cards {
-  margin: 20px;
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(300px, 1fr)
-  ); /* Responsive grid */
-  gap: 20px; /* Reduced gap */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
 }
 
 @media (max-width: 600px) {
@@ -15,68 +11,100 @@
 }
 
 .property-card {
-  display: flex;
-  flex-direction: column;
   height: auto;
   border-radius: 10px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   background-color: #fff;
   position: relative;
+  padding: 0 0 0.4rem 0;
+  cursor: pointer;
 }
 
 .property-image {
   height: 50%;
+  position: relative;
 }
 
 .property-image img {
   width: 100%;
-  height: 240px;
+  height: 180px;
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
   object-fit: cover;
 }
 
-.listing-details {
-  padding: 0.1rem 1rem;
-}
-
-.listing-short-detail {
+.image-toggler {
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  justify-content: center;
 }
 
-.property-title {
-  font-size: 20px;
-  flex-grow: 1;
-  color: #000;
-  margin: 0;
+.image-toggle {
+  width: 5px;
+  height: 5px;
+  background-color: #fff;
+  border-radius: 50%;
+  margin: 5px;
+  opacity: 0.5;
+  transition: all 0.2s ease-in-out;
 }
 
-.listing-price {
+.image-toggle.active {
+  opacity: 1;
+  width: 8px;
+  height: 8px;
+}
+
+.toggler-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  font-size: 1.1rem;
-  margin: 0;
-  color: #007fff;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.toggler-icon.left {
+  left: 0;
+}
+
+.toggler-icon.right {
+  right: 0;
+}
+
+.price-details {
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: larger;
+  font-weight: bolder;
+  color: #000;
 }
 
 .property-features {
-  padding: 0.1rem 1.5rem;
+  padding: 0.2rem 1rem;
   display: flex;
+  font-size: 14px;
+  color: rgb(120, 120, 120);
 }
 
 .features-list {
   display: flex;
-  gap: 10px;
   align-items: center;
 }
 
 .feature {
   display: flex;
   align-items: center;
-  margin-right: 1.2rem;
 }
 
 .icon {
@@ -85,18 +113,29 @@
   justify-content: center;
   width: 25px;
   height: 25px;
-  background: #edf1f9;
-  border-radius: 50%;
-  margin-right: 7px;
 }
 
 .location-details {
-  padding: 1rem 1.5rem;
+  padding: 0.2rem 1rem;
   margin: 0;
-  margin-top: 1rem;
-  border-top: 1px solid #e4e8f3;
   display: flex;
+  gap: 10px;
   align-items: center;
+  font-size: 14px;
+  color: rgb(120, 120, 120);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-details {
+  padding: 0.2rem 1rem;
+  margin: 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(120, 120, 120);
 }
 
 @media (max-width: 600px) {
@@ -106,6 +145,8 @@
 }
 
 span.sale-label {
+  position: absolute;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -125,13 +166,13 @@ span.sale-label.property-type {
   border-radius: 5px;
   font-size: 12px;
 }
-
-.posted-on {
+.posted-on-overlay {
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #0080ffd5;
+  background-color: #00000099;
   color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 2px 4px;
+  border-radius: 5px;
+  z-index: 1;
 }

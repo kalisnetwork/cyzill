@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Header.css'
 import { useSelector } from 'react-redux'
+import Logout from '../../auth/Logout/Logout'
 
 const BuyNavs = [
     {
@@ -112,7 +113,16 @@ const navigation = [
     { title: "Agent Finder", path: "/agent-finder", isDrapdown: false },
 ]
 
+
+const userLinks = [
+    { title: "Dashboard", path: "/dashboard" },
+    { title: "Profile", path: "/profile" },
+    { title: "Settings", path: "/settings" },
+    { title: "My Listings", path: "/listed-properties" },
+];
+
 const Header = () => {
+    const [state, setState] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
     const dropdownRef = useRef(null);
@@ -136,7 +146,6 @@ const Header = () => {
         setActiveDropdown(idx);
     };
 
-    console.log('User photo URL:', currentUser ? currentUser.photo : 'No user logged in');
     console.log('Current User:', currentUser);
     return (
         <>
@@ -164,7 +173,7 @@ const Header = () => {
                             </button>
                         </div>
                     </div>
-                    <div className={`nav-menu flex-1 pb-2 mt-4 md:block md:pb-0 md:mt-0 ${menuOpen ? 'block' : 'hidden'}`} ref={dropdownRef} style={{ zIndex: 9999 }}>
+                    <div className={`nav-menu flex-1 pb-2 mt-4 md:block md:pb-0 md:mt-0 ${menuOpen ? 'block' : 'hidden'}`} ref={dropdownRef} style={{ zIndex: 99 }}>
                         <ul className="items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
                             {navigation.map((item, idx) => (
                                 <li key={idx} className="dropdown">
@@ -205,15 +214,38 @@ const Header = () => {
                                 <Link to="/help" className="block py-3 px-4 font-medium text-center text-base md:inline">
                                     Help
                                 </Link>
-                                {/* Render the photo here and add logs for debugging */}
-                                {currentUser?.others?.photo ? (
-                                    <Link to='/profile'>
-                                        <img
-                                            className='rounded-full h-7 w-7 object-cover'
-                                            src={currentUser.others.photo}
-                                            alt='profile'
-                                        />
-                                    </Link>
+                                {currentUser ? (
+                                    <>
+                                        <button
+                                            onClick={() => setState(!state)}
+                                            className="focus:outline-none active:outline-none transform active:scale-100"
+                                        >
+                                            <img
+                                                className='rounded-full h-7 w-7 object-cover'
+                                                src={currentUser?.others?.photo || currentUser?.photo}
+                                                alt='profile'
+                                                onError={(e) => { e.target.onerror = null; e.target.src = "default_image_url"; }}
+                                            />
+                                        </button>
+                                        {state && (
+                                            <div className={`relative border-t lg:border-none ${state ? 'block' : 'hidden'} lg:absolute lg:top-full lg:right-0 lg:bg-white lg:mt-6 lg:shadow-md lg:border lg:rounded-md lg:w-52 lg:z-10`}>
+                                                <ul className="bg-white lg:border lg:rounded-md lg:shadow-md lg:space-y-0 lg:mt-0">
+                                                    {
+                                                        userLinks.map((item, idx) => (
+                                                            <li key={idx}>
+                                                                <a className="block text-gray-600 hover:text-gray-900 lg:hover:bg-gray-50 lg:p-3" href={item.path}>
+                                                                    {item.title}
+                                                                </a>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                    <button className="block w-full text-justify text-gray-600 hover:text-gray-900 border-t py-3 lg:hover:bg-gray-50 lg:p-3">
+                                                        <Logout />
+                                                    </button>
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </>
                                 ) : (
                                     <Link to="/login" className="block py-3 px-4 font-medium text-center text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 active:shadow-none rounded-lg shadow md:inline">
                                         Log in

@@ -184,10 +184,11 @@ const SignUp = () => {
                                     type="text"
                                     required
                                     value={state.username}
-                                    onChange={e => setState(prevState => ({ ...prevState, username: e.target.value }))}
+                                    onChange={e => setState(prevState => ({ ...prevState, username: e.target.value.trim() }))}
                                     className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                 />
                             </div>
+
                             <div>
                                 <label className="font-medium">Phone Number</label>
                                 <input
@@ -203,7 +204,7 @@ const SignUp = () => {
                                     type="email"
                                     required
                                     value={state.email}
-                                    onChange={e => setState(prevState => ({ ...prevState, email: e.target.value }))}
+                                    onChange={e => setState(prevState => ({ ...prevState, email: e.target.value.trim() }))}
                                     className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                 />
                             </div>

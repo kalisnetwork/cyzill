@@ -8,7 +8,7 @@ import OauthLogin from '../oauth/OauthLogin';
 
 const Login = () => {
     const navigate = useNavigate()
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState(''); // rename email to identifier
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
@@ -16,28 +16,23 @@ const Login = () => {
 
     const dispatch = useDispatch();
 
-    const validateEmail = (email) => {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!email || !password) {
-            setError('Please provide both email and password.');
+        if (!identifier || !password) { // check if identifier and password are provided
+            setError('Please provide both email/phone number and password.');
             return;
         }
 
         try {
-            setLoading(true);  // start loading
+            setLoading(true);
             dispatch(loginStart());
             const response = await fetch('http://localhost:5000/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ identifier, password }), // send identifier and password
             });
 
             const data = await response.json();
@@ -48,7 +43,7 @@ const Login = () => {
             } else {
                 switch (response.status) {
                     case 401:
-                        setError('Invalid email or password.');
+                        setError('Invalid email/phone number or password.');
                         break;
                     case 500:
                         setError('Server error. Please try again later.');
@@ -62,23 +57,15 @@ const Login = () => {
             setError(error.message || 'Login failed.');
             dispatch(loginFailure(error.message || 'Login failed.'));
         } finally {
-            setLoading(false);  // end loading
+            setLoading(false);
         }
     };
-
-
-
-
-
     return (
         <>
             <main className="min-h-screen flex">
                 <div className="relative flex-1 hidden items-center justify-center bg-slate-300 h-screen lg:flex">
                     <div className="relative z-10 w-full max-w-md">
                         <img src="/login-house.png" className="w-full" draggable={false} alt="House" />
-                        {/* <div className="mt-16 space-y-3">
-                <h3 className="text-black text-3xl font-bold">Start growing your business quickly</h3>
-            </div> */}
                     </div>
                 </div>
                 <div className="flex-1 flex items-center justify-center h-screen">
@@ -103,8 +90,8 @@ const Login = () => {
                         </div>
                         <form className="space-y-5" onSubmit={handleSubmit}>
                             <div>
-                                <label htmlFor="emailAddress">Email address</label>
-                                <input type="email" id="emailAddress" name="emailAddress" placeholder='yourmail@email.com' required onChange={(e) => setEmail(e.target.value)} className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg" aria-label="Email Address" />
+                                <label htmlFor="identifier">Enter your email or phone</label>
+                                <input type="text" id="identifier" name="identifier" placeholder='' required onChange={(e) => setIdentifier(e.target.value)} className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg" aria-label="Email Address or Phone Number" />
                             </div>
                             <div>
                                 <label htmlFor="password">Password</label>
