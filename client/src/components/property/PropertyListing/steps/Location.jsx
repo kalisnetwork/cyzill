@@ -9,34 +9,48 @@ const Location = ({ formData, saveFormData }) => {
     const [selectedPlace, setSelectedPlace] = useState(mapPosition);
     const [center, setCenter] = useState(mapPosition);
     const [isSaved, setIsSaved] = useState(false);
-
-    const autocompleteRef = useRef(null);
+    const [address, setAddress] = useState('');
     const mapRef = useRef(null);
     const inputRef = useRef(null);
     const markerRef = useRef(null);
 
     useEffect(() => {
-        if (window.google) {
-            const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current);
-            autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace();
-                if (place.geometry) {
-                    const newPosition = {
-                        lat: place.geometry.location.lat(),
-                        lng: place.geometry.location.lng(),
-                    };
-                    setSelectedPlace(newPosition);
-                    setMapPosition(newPosition);
-                    saveFormData((prevFormData) => ({
-                        ...prevFormData,
-                        location: newPosition,
-                    }));
-                    mapRef.current.panTo(newPosition);
-                    markerRef.current.setPosition(newPosition);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const newPosition = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+                setSelectedPlace(newPosition);
+                setMapPosition(newPosition);
+                saveFormData((prevFormData) => ({
+                    ...prevFormData,
+                    location: newPosition,
+                }));
+                mapRef.current.panTo(newPosition);
+                markerRef.current.setPosition(newPosition);
+                // Get the address from the latitude and longitude
+                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${newPosition.lat},${newPosition.lng}&key=AIzaSyBzE9bz84Bdwy24I5DAjwVhgjijqgrEEdU`);
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    const address = data.results[0].formatted_address;
+                    setAddress(address);
+                    // Update the form data with the address
+                    saveFormData({
+                        ...formData,
+                        location: {
+                            ...formData.location,
+                            address: address,
+                        },
+                    });
+                } else {
+                    console.log(data);
                 }
             });
         }
-    }, [saveFormData]);
+    }, []);
+
+
 
     useEffect(() => {
         setIsSaved(false);
@@ -69,44 +83,52 @@ const Location = ({ formData, saveFormData }) => {
         setSelectedPlace(newPosition);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form submitted with data:', formData);
-        setIsSaved(true);
-    };
-
     return (
         <div className="flex flex-col items-center justify-center h-screen">
+            <h2 className="text-2xl font-semibold mb-4">Location Details</h2>
             <input ref={inputRef} type="text" placeholder="Search for a location" className="w-full p-2 mb-4 border border-gray-300 rounded-md " />
             <div className="w-full h-1/2 mb-4">
                 <GoogleMap
                     zoom={10}
                     center={center}
                     onLoad={onMapLoad}
-                    onClick={(e) => {
+                    onClick={async (e) => {
                         const newPosition = {
                             lat: e.latLng.lat(),
                             lng: e.latLng.lng(),
                         };
                         setSelectedPlace(newPosition);
                         setMapPosition(newPosition);
-                        saveFormData((prevFormData) => ({
-                            ...prevFormData,
+
+                        const newFormData = {
+                            ...formData,
                             location: newPosition,
-                        }));
+                        };
+                        saveFormData(newFormData);
+                        console.log(newFormData);
                         markerRef.current.setPosition(newPosition);
+                        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${newPosition.lat},${newPosition.lng}&key=AIzaSyBzE9bz84Bdwy24I5DAjwVhgjijqgrEEdU`);
+                        const data = await response.json();
+                        if (data.results && data.results.length > 0) {
+                            const address = data.results[0].formatted_address;
+                            setAddress(address);
+
+                            saveFormData({
+                                ...newFormData,
+                                location: {
+                                    ...newFormData.location,
+                                    address: address,
+                                },
+                            });
+                        } else {
+                            console.log(data);
+                        }
                     }}
                     mapContainerStyle={{ height: '100%', width: '100%' }}
-                    options={{
-                        scrollwheel: true,
-                        fullscreenControl: false,
-                        mapTypeControl: true,
-                        disableDefaultUI: true,
-                        clickableIcons: false,
-                    }}
+                    options={{ scrollwheel: true, fullscreenControl: false, mapTypeControl: true, disableDefaultUI: true, clickableIcons: false }}
                 />
             </div>
-            <form onSubmit={handleSubmit} className="w-full max-w-md">
+            <form className="w-full max-w-md">
                 <div className="flex mb-4">
                     <label className="w-1/2 mr-2">
                         Latitude:
@@ -117,9 +139,10 @@ const Location = ({ formData, saveFormData }) => {
                         <input type="number" value={selectedPlace.lng} onChange={handleLongitudeChange} placeholder="Longitude" className="w-full p-2 border border-gray-300 rounded-md " />
                     </label>
                 </div>
-                <button type="submit" className={`w-full p-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50 ${isSaved ? 'bg-green-500 hover:bg-green-600 focus:ring-green-600' : 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-600'}`} >
-                    {isSaved ? 'Saved Successfully' : 'Save Location'}
-                </button>
+                <label className="w-full mb-4">
+                    Address:
+                    <input type="text" value={address} readOnly className="w-full p-2 border border-gray-300 rounded-md " />
+                </label>
             </form>
         </div>
     );

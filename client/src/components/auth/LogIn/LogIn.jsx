@@ -8,7 +8,7 @@ import OauthLogin from '../oauth/OauthLogin';
 
 const Login = () => {
     const navigate = useNavigate()
-    const [identifier, setIdentifier] = useState(''); // rename email to identifier
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);

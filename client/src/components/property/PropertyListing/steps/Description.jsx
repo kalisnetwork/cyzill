@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 const useInput = (initialValue, key, formData, saveFormData) => {
     const [value, setValue] = useState(formData?.[key] !== undefined ? formData[key] : initialValue);
+
     useEffect(() => {
         setValue(formData?.[key] !== undefined ? formData[key] : initialValue);
     }, [formData]);
+
     const handleChange = (e) => {
         if (e && e.target) {
             const newValue = e.target.value;
@@ -14,7 +16,14 @@ const useInput = (initialValue, key, formData, saveFormData) => {
             }
         }
     };
-    return [value, handleChange];
+    const reset = () => {
+        setValue(initialValue);
+        if (saveFormData) {
+            saveFormData({ ...formData, [key]: initialValue });
+        }
+    };
+
+    return [value, handleChange, reset];
 };
 
 
@@ -23,6 +32,8 @@ const Description = ({ formData, saveFormData }) => {
     const [description, setDescriptionChange] = useInput('Default description', 'description', formData, saveFormData);
     const [personalDetails, handlePersonalDetailsChange] = useInput('', 'personalDetails', formData, saveFormData);
     const [forDetails, handleForDetailsChange] = useInput('', 'forDetails', formData, saveFormData);
+    const [propertyType, handlePropertyTypeChange, resetPropertyType] = useInput('', 'propertyType', formData, saveFormData);
+    const [totalFlats, handleTotalFlatsChange, resetTotalFlats] = useInput('', 'totalFlats', formData, saveFormData);
     const [warning, setWarning] = useState('');
     const maxDescriptionLength = 1000;
 
@@ -41,6 +52,12 @@ const Description = ({ formData, saveFormData }) => {
             }
         }
     };
+
+    useEffect(() => {
+        if (propertyType !== 'flat') {
+            resetTotalFlats();
+        }
+    }, [propertyType]);
 
     return (
         <>
@@ -65,8 +82,40 @@ const Description = ({ formData, saveFormData }) => {
                                     <option value="rent">Rent</option>
                                 </select>
                             </div>
+                            <div>
+                                <label className="block mb-1 font-medium">Property Type:</label>
+                                <select value={propertyType} onChange={handlePropertyTypeChange} className="w-full border rounded-md px-3 py-2">
+                                    <option value=""></option>
+                                    <optgroup label="ALL RESIDENTIAL">
+                                        <option value="flat">Flat/Apartment</option>
+                                        <option value="residentailhouse">Residential House</option>
+                                        <option value="Villa">Villa</option>
+                                        <option value="residentialland">Residential Land</option>
+                                        <option value="penthouse">Penthouse</option>
+                                    </optgroup>
+                                    <optgroup label="ALL COMMERCIAL">
+                                        <option value="commercialoffice">Commercial Office Space</option>
+                                        <option value="commercialshop">Commercial Shop</option>
+                                        <option value="commercialland">Commercial Land</option>
+                                        <option value="warehouse">Warehouse/Godown</option>
+                                        <option value="industialland">Industrial Land</option>
+                                        <option value="industrialbuilding">Industrial Building</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            {propertyType === 'flat' && (
+                                <div>
+                                    <label className="block mb-1 font-medium">Total Number of Flats:</label>
+                                    <select value={totalFlats} onChange={handleTotalFlatsChange} className="w-full border rounded-md px-3 py-2">
+                                        <option value=""></option>
+                                        <option value="below50">Below 50</option>
+                                        <option value="between50and100">Between 50 and 100</option>
+                                        <option value="above100">Above 100</option>
+                                    </select>
+                                </div>
+                            )}
                             <div className="mb-4">
-                                <label className="block mb-1 font-medium">Description</label>
+                                <label className="block mb-1 font-medium">What makes this place special?</label>
                                 <textarea
                                     value={description}
                                     onChange={handleDescriptionChange}

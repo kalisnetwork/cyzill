@@ -50,3 +50,14 @@ export const deleteProperty = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Get properties for a specific user
+export const getPropertiesForUser = async (req, res) => {
+    try {
+        const username = req.params.username;
+        const properties = await Property.find({ username: username });
+        res.json(properties);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};

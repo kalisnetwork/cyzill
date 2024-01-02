@@ -1,0 +1,150 @@
+{
+  "BuyNavs": [
+    {
+      "label": "Farmville homes for sale",
+      "navs": [
+        {
+          "title": "Homes For Sale",
+          "path": "/homes/for-sale"
+        },
+        {
+          "title": "Open Houses",
+          "path": "/homes/open-houses"
+        },
+        {
+          "title": "Coming Soon",
+          "path": "/homes/coming-soon"
+        }
+      ]
+    },
+    {
+      "label": "Farmville homes for sale",
+      "navs": [
+        {
+          "title": "Homes For Sale",
+          "path": "/homes/for-sale"
+        },
+        {
+          "title": "Open Houses",
+          "path": "/homes/open-houses"
+        },
+        {
+          "title": "Coming Soon",
+          "path": "/homes/coming-soon"
+        }
+      ]
+    },
+    {
+      "label": "Farmville homes for sale",
+      "navs": [
+        {
+          "title": "Homes For Sale",
+          "path": "/homes/for-sale"
+        },
+        {
+          "title": "Open Houses",
+          "path": "/homes/open-houses"
+        },
+        {
+          "title": "Coming Soon",
+          "path": "/homes/coming-soon"
+        }
+      ]
+    }
+  ],
+  "SellNavs": [
+    {
+      "label": "Sell Your Property",
+      "navs": [
+        {
+          "title": "Sell Your House",
+          "path": "/homes/for-sale"
+        },
+        {
+          "title": "Find Sellers Agent",
+          "path": "/homes/open-houses"
+        },
+        {
+          "title": "Coming Soon",
+          "path": "/homes/coming-soon"
+        }
+      ]
+    }
+  ],
+  "RentNavs": [
+    {
+      "label": "Rent You Houses",
+      "navs": [
+        {
+          "title": "Houses for Rent",
+          "path": "/homes/for-sale"
+        },
+        {
+          "title": "Rental Buildings",
+          "path": "/homes/open-houses"
+        },
+        {
+          "title": "Apartments for Rent",
+          "path": "/homes/coming-soon"
+        },
+        {
+          "title": "Homes For Sale",
+          "path": "/homes/for-sale"
+        }
+      ]
+    }
+  ],
+  "navigation": [
+    {
+      "title": "Buy",
+      "path": "/homes",
+      "isDrapdown": true,
+      "navs": "BuyNavs"
+    },
+    {
+      "title": "Sell",
+      "path": "/sell",
+      "isDrapdown": true,
+      "navs": "SellNavs"
+    },
+    {
+      "title": "Rent",
+      "path": "/homes/for-rental",
+      "isDrapdown": true,
+      "navs": "RentNavs"
+    },
+    {
+      "title": "Home Loans",
+      "path": "/home-loans",
+      "isDrapdown": false
+    },
+    {
+      "title": "Agent Finder",
+      "path": "/agent-finder",
+      "isDrapdown": false
+    },
+    {
+      "title": "Help",
+      "path": "/help",
+      "isDrapdown": false
+    }
+  ],
+  "userLinks": [
+    {
+      "title": "Dashboard",
+      "path": "/dashboard"
+    },
+    {
+      "title": "Profile",
+      "path": "/profile"
+    },
+    {
+      "title": "Settings",
+      "path": "/settings"
+    },
+    {
+      "title": "My Listings",
+      "path": "/listed-properties"
+    }
+  ]
+}

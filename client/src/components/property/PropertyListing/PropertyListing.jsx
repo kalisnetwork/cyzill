@@ -3,7 +3,7 @@ import Description from './steps/Description';
 import Media from './steps/Media';
 import Location from './steps/Location';
 import Details from './steps/Details';
-import Amenities from './steps/Amenities';
+import Payment from './steps/Payment';
 
 const initialState = {
     step: 1,
@@ -12,7 +12,7 @@ const initialState = {
         media: [],
         location: '',
         detail: '',
-        amenities: [],
+        payment: [],
     },
 };
 
@@ -23,11 +23,12 @@ function reducer(state, action) {
         case 'previousStep':
             return { ...state, step: state.step - 1 };
         case 'saveFormData':
-            return { ...state, formData: { ...state.formData, ...action.data } };
+            return { ...state, formData: { ...state.formData, ...action.data, location: { ...state.formData.location, ...action.data.location } } };
         default:
             throw new Error();
     }
 }
+
 
 
 const PropertyListing = () => {
@@ -53,7 +54,7 @@ const PropertyListing = () => {
         2: Media,
         3: Location,
         4: Details,
-        5: Amenities,
+        5: Payment,
     };
 
     const StepComponent = stepComponents[state.step];
@@ -63,20 +64,23 @@ const PropertyListing = () => {
         2: 'Media',
         3: 'Location',
         4: 'Details',
-        5: 'Amenities',
+        5: 'Payment',
     };
     const isStepCompleted = () => {
         switch (state.step) {
             case 1:
-                return state.formData.description && state.formData.description.trim() !== '';
+                return state.formData.description && state.formData.description.trim() !== '' &&
+                    state.formData.personalDetails && state.formData.forDetails &&
+                    state.formData.propertyType && (state.formData.propertyType !== 'flat' || state.formData.totalFlats);
             case 2:
                 return state.formData.media && state.formData.media.length > 0;
             case 3:
                 return state.formData.location.lat !== '' && state.formData.location.lng !== '';
             case 4:
-                return state.formData.bedrooms && state.formData.bathrooms && state.formData.coveredArea && state.formData.carpetArea && state.formData.constructionYear;
+                return state.formData.bedrooms && state.formData.bathrooms && state.formData.coveredArea &&
+                    state.formData.carpetArea && state.formData.constructionYear;
             case 5:
-                return state.formData.amenities && state.formData.amenities.length > 0;
+                return state.formData.payment && state.formData.payment.length > 0;
             default:
                 return true;
         }
@@ -87,6 +91,20 @@ const PropertyListing = () => {
 
     const totalSteps = Object.keys(stepComponents).length;
     const completionPercentage = Math.floor((state.step / totalSteps) * 100);
+
+    useEffect(() => {
+        const handleUnload = (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        };
+
+        window.addEventListener('beforeunload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload);
+        };
+    }, []);
+
 
     return (
         <div className="p-10 relative">
@@ -140,7 +158,7 @@ const PropertyListing = () => {
                     </button>
                 )}
                 {!isLastStep && (
-                    <button onClick={nextStep} disabled={!isStepCompleted()} className={`bg-blue-500 text-white px-4 py-2 rounded-md ${isStepCompleted() ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}>
+                    <button onClick={nextStep} className={`bg-blue-500 text-white px-4 py-2 rounded-md ${isStepCompleted() ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}>
                         Next
                     </button>
                 )}

@@ -1,38 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import SearchBar from '../../marketplace/SearchBar/SearchBar';
 
 const Hero = () => {
-    const [searchResults, setSearchResults] = useState([]);
-    const [properties, setProperties] = useState([]);
+    const [, setSearchResults] = useState([]);
+    const [properties,] = useState([]);
 
-    useEffect(() => {
-        fetch('/data.json')
-            .then((response) => response.json())
-            .then((data) => setProperties(data))
-            .catch((error) => console.error(error));
-    }, []);
 
-    const handleSearch = (searchParams) => {
-        const results = properties.filter((property) => {
-            if (
-                (searchParams.location === '' || property.location.includes(searchParams.location)) &&
-                (searchParams.minPrice === '' || property.price >= searchParams.minPrice) &&
-                (searchParams.maxPrice === '' || property.price <= searchParams.maxPrice) &&
-                (searchParams.bedrooms === '' || property.bedrooms >= searchParams.bedrooms)
-            ) {
-                return true;
-            }
-            return false;
-        });
-
-        setSearchResults(results);
+    const handleSearch = () => {
+        setSearchResults([]);
     };
-
 
     return (
         <>
             <div
-                className="relative bg-cover bg-center h-96 md:h-120 lg:h-4/5 z-10"
+                className="relative bg-cover bg-center h-96 md:h-120 lg:h-4/5 z-0"
                 style={{
                     backgroundImage: `url(/assets/images/hero.png)`
                 }}

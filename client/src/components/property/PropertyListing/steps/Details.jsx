@@ -6,6 +6,9 @@ const Details = ({ formData, saveFormData }) => {
     const [coveredArea, setCoveredArea] = useState(formData.coveredArea || '');
     const [carpetArea, setCarpetArea] = useState(formData.carpetArea || '');
     const [constructionYear, setConstructionYear] = useState(formData.constructionYear || '');
+    const [totalFloors, setTotalFloors] = useState(formData.totalFloors || '');
+    const [furnishedStatus, setFurnishedStatus] = useState(formData.furnishedStatus || '');
+    const [amenities, setAmenities] = useState(formData.amenities || []);
 
     useEffect(() => {
         setBedrooms(formData.bedrooms || '');
@@ -13,7 +16,27 @@ const Details = ({ formData, saveFormData }) => {
         setCoveredArea(formData.coveredArea || '');
         setCarpetArea(formData.carpetArea || '');
         setConstructionYear(formData.constructionYear || '');
+        setTotalFloors(formData.totalFloors || '');
+        setFurnishedStatus(formData.furnishedStatus || '');
+        setAmenities(formData.amenities || []);
     }, [formData]);
+
+    const handleFurnishedStatusChange = (e) => {
+        saveFormData({ ...formData, furnishedStatus: e.target.value });
+    };
+
+    const handleAmenityChange = (e) => {
+        const { checked, value } = e.target;
+        const newAmenities = checked ? [...amenities, value] : amenities.filter((amenity) => amenity !== value);
+        setAmenities(newAmenities);
+        saveFormData({ ...formData, amenities: newAmenities });
+    };
+
+
+
+    const handleTotalFloorsChange = (e) => {
+        saveFormData({ ...formData, totalFloors: e.target.value });
+    };
 
     const handleBedroomsChange = (e) => {
         saveFormData({ ...formData, bedrooms: e.target.value });
@@ -60,6 +83,19 @@ const Details = ({ formData, saveFormData }) => {
                     />
                 </div>
                 <div className="mb-4">
+                    <label className="block mb-1 font-medium">Total Floors</label>
+                    <input type="number" value={formData.totalFloors || ''} onChange={handleTotalFloorsChange} className="w-full border rounded-md px-3 py-2" placeholder="Enter total number of floors" />
+                </div>
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium">Furnished Status</label>
+                    <select value={furnishedStatus} onChange={handleFurnishedStatusChange} className='w-full border rounded-md px-3 py-2'>
+                        <option value="">Select...</option>
+                        <option value="Furnished">Furnished</option>
+                        <option value="Semi-Furnished">Semi-Furnished</option>
+                        <option value="Unfurnished">Unfurnished</option>
+                    </select>
+                </div>
+                <div className="mb-4">
                     <label className="block mb-1 font-medium">Covered Area (Sq.Ft)</label>
                     <input
                         type="number"
@@ -89,14 +125,91 @@ const Details = ({ formData, saveFormData }) => {
                         placeholder="Enter construction year"
                     />
                 </div>
-            </div>
-            <div className="bg-gray-100 p-4 border rounded-md">
-                <h3 className="text-lg font-semibold mb-2">Property Details</h3>
-                <p>Bedrooms: {bedrooms}</p>
-                <p>Bathrooms: {bathrooms}</p>
-                <p>Covered Area: {coveredArea}</p>
-                <p>Carpet Area: {carpetArea}</p>
-                <p>Construction Year: {constructionYear}</p>
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium">Amenities</label>
+                    <div className="grid grid-cols-3 gap-2">
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="Water"
+                                checked={amenities.includes('Water')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Water</span>
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="Parking"
+                                checked={amenities.includes('Parking')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Parking</span>
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="Pool"
+                                checked={amenities.includes('Pool')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Pool</span>
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="Gym"
+                                checked={amenities.includes('Gym')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Gym</span>
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="Wifi"
+                                checked={amenities.includes('Wifi')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Wifi</span>
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="Security"
+                                checked={amenities.includes('Security')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Security</span>
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="Lift"
+                                checked={amenities.includes('Lift')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Lift</span>
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                value="PowerBackup"
+                                checked={amenities.includes('PowerBackup')}
+                                onChange={handleAmenityChange}
+                                className="form-checkbox"
+                            />
+                            <span className="ml-2">Power Backup</span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     );
