@@ -2,7 +2,7 @@
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = 'http://localhost:5000/api/user';
+const BASE_URL = 'https://cyzill-api.onrender.com/api/user';
 
 export const fetchUserProfile = createAsyncThunk('user/fetchProfile', async () => {
     const response = await fetch(`${BASE_URL}/profile`);
