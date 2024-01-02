@@ -14,7 +14,7 @@ const Payment = ({ formData, saveFormData }) => {
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
-        const response = await fetch('http://localhost:5000/api/property/properties', {
+        const response = await fetch('https://cyzill-api.onrender.com/api/property/properties', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...formData, username: username }) // include username in the form data
