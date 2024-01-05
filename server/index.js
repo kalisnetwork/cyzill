@@ -30,6 +30,14 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/property', propertyRouter);
 
+
+app.get("/api", function (req, res) {
+    res.json({ message: "Cyzill api" });
+});
+app.get("/", function (req, res) {
+    res.json({ message: "Cyzill Server Started" });
+});
+
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';

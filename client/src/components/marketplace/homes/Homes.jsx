@@ -7,8 +7,15 @@ const Homes = () => {
     const [selectedProperties, setSelectedProperties] = useState([]);
     const [visibleProperties, setVisibleProperties] = useState([]);
     const [propertyData, setPropertyData] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [isLoading, setIsLoading] = useState(true); // add isLoading state
+    const [isLoading, setIsLoading] = useState(true);
+    const [filters, setFilters] = useState({
+        searchTerm: '',
+        price: '',
+        bedrooms: '',
+        bathrooms: '',
+        propertyType: '',
+        amenities: [],
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,20 +34,35 @@ const Homes = () => {
         fetchData();
     }, []);
 
-    const handleSearch = (term) => {
-        setSearchTerm(term);
+    useEffect(() => {
+        const filteredProperties = propertyData.filter(property => {
+            // Add your filter logic here. For example:
+            return (!filters.price || property.price <= filters.price) &&
+                (!filters.bedrooms || property.bedrooms >= filters.bedrooms) &&
+                (!filters.bathrooms || property.bathrooms >= filters.bathrooms) &&
+                (!filters.propertyType || property.propertyType === filters.propertyType) &&
+                (!filters.amenities.length || filters.amenities.every(amenity => property.amenities.includes(amenity))) &&
+                property.location.address.toLowerCase().includes(filters.searchTerm.toLowerCase());
+        });
+        setVisibleProperties(filteredProperties);
+    }, [filters, propertyData]);
+
+    const handleFilterChange = (filterName, value) => {
+        setFilters(prevFilters => ({ ...prevFilters, [filterName]: value }));
     };
 
-    const filteredProperties = propertyData.filter(property => property.location.address.toLowerCase().includes(searchTerm.toLowerCase()));
+    const handleSearch = (term) => {
+        setFilters(prevFilters => ({ ...prevFilters, searchTerm: term }));
+    };
 
     if (isLoading) {
-        return <div>Loading...</div>; // display loading indicator
+        return <div>Loading...</div>;
     }
 
     return (
         <div className="w-full h-screen flex flex-col">
             <div className="flex items-center justify-start p-2 border border-gray-200">
-                <Filters onSearch={handleSearch} />
+                <Filters onSearch={handleSearch} onFilterChange={handleFilterChange} />
             </div>
             <div className="flex-grow overflow-auto">
                 <div className="flex flex-row h-full overflow-auto">
@@ -60,6 +82,5 @@ const Homes = () => {
         </div>
     );
 };
-
 
 export default Homes;
