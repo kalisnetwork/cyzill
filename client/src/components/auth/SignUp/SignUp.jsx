@@ -3,6 +3,7 @@ import './SignUp.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import OauthLogin from '../oauth/OauthLogin';
+import { BASE_URL } from '../../../config';
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -44,7 +45,7 @@ const SignUp = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('https://cyzill-api.onrender.com/api/auth/signup', {
+            const response = await fetch(`${BASE_URL}/api/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

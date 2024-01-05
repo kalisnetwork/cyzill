@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { BASE_URL } from '../../../config';
 
 const EditProperty = ({ propertyId }) => {
     const [property, setProperty] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`https://cyzill-api.onrender.com/api/property/properties/${propertyId}`);
+            const response = await fetch(`${BASE_URL}/api/property/properties/${propertyId}`);
             const data = await response.json();
             setProperty(data);
         };
@@ -16,7 +17,7 @@ const EditProperty = ({ propertyId }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const response = await fetch(`https://cyzill-api.onrender.com/api/property/properties/${propertyId}`, {
+        const response = await fetch(`${BASE_URL}/api/property/properties/${propertyId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

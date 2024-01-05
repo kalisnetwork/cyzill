@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropertyCard from '../../property/PropertyCard/PropertyCard';
 import Map from '../map/Map';
 import Filters from '../filters/Filters';
+import { BASE_URL } from "../../../config";
 
 const Homes = () => {
     const [selectedProperties, setSelectedProperties] = useState([]);
@@ -21,7 +22,7 @@ const Homes = () => {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('https://cyzill-api.onrender.com/api/property/properties');
+                const response = await fetch(`${BASE_URL}/api/property/properties`);
                 const data = await response.json();
                 console.log('propertyData:', data);
                 setPropertyData(data);

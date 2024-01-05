@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { BASE_URL } from '../../../../config';
 
 const Payment = ({ formData, saveFormData }) => {
     const { currentUser } = useSelector(state => state.user);
@@ -14,7 +15,7 @@ const Payment = ({ formData, saveFormData }) => {
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
-        const response = await fetch('https://cyzill-api.onrender.com/api/property/properties', {
+        const response = await fetch(`${BASE_URL}/api/property/properties`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...formData, username: username }) // include username in the form data

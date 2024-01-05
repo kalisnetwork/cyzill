@@ -3,6 +3,7 @@ import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import PropertyCard from '../../property/PropertyCard/PropertyCard';
 import { debounce } from 'lodash';
 import { OverlayView } from "@react-google-maps/api";
+import { BASE_URL } from "../../../config";
 
 const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) => {
     const [properties, setProperties] = useState([]);
@@ -11,7 +12,7 @@ const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) =
     const [initialCenter, setInitialCenter] = useState({ lat: 17.422, lng: 78.488 });
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch('http://localhost:5000/api/property/properties');
+            const response = await fetch(`${BASE_URL}/api/property/properties`);
             const data = await response.json();
             setProperties(data);
         };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPlusCircle, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { BASE_URL } from '../../../config';
 
 const ListedProperties = ({ username }) => {
     const [properties, setProperties] = useState([]);
@@ -8,7 +9,7 @@ const ListedProperties = ({ username }) => {
     useEffect(() => {
         console.log(username);
         const fetchData = async () => {
-            const response = await fetch(`https://cyzill-api.onrender.com/api/property/properties/user/${username}`);
+            const response = await fetch(`${BASE_URL}/api/property/properties/user/${username}`);
             const data = await response.json();
             setProperties(data);
         };
@@ -18,7 +19,7 @@ const ListedProperties = ({ username }) => {
 
 
     const handleDelete = async (propertyId) => {
-        const response = await fetch(`https://cyzill-api.onrender.com/api/property/properties/${propertyId}`, {
+        const response = await fetch(`${BASE_URL}/api/property/properties/${propertyId}`, {
             method: 'DELETE',
         });
 

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { loginStart, loginSuccess, loginFailure } from '../../../redux/user/userSlice';
 import OauthLogin from '../oauth/OauthLogin';
+import { BASE_URL } from '../../../config';
 
 const Login = () => {
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ const Login = () => {
         try {
             setLoading(true);
             dispatch(loginStart());
-            const response = await fetch('https://cyzill-api.onrender.com/api/auth/login', {
+            const response = await fetch(`${BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

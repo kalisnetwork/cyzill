@@ -5,6 +5,7 @@ import { app } from '../../../firebase.js';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../../../redux/user/userSlice.js';
+import { BASE_URL } from '../../../config.js';
 
 const OauthLogin = () => {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const OauthLogin = () => {
             const result = await signInWithPopup(auth, providerGoogle);
             const { user } = result;
 
-            const res = await fetch('https://cyzill-api.onrender.com/api/auth/google', {
+            const res = await fetch(`${BASE_URL}/api/auth/google`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
