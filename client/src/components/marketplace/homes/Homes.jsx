@@ -21,7 +21,7 @@ const Homes = () => {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('http://localhost:5000/api/property/properties');
+                const response = await fetch('https://cyzill-api.onrender.com/api/property/properties');
                 const data = await response.json();
                 console.log('propertyData:', data);
                 setPropertyData(data);

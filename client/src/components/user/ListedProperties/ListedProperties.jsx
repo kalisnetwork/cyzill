@@ -8,7 +8,7 @@ const ListedProperties = ({ username }) => {
     useEffect(() => {
         console.log(username);
         const fetchData = async () => {
-            const response = await fetch(`http://localhost:5000/api/property/properties/user/${username}`);
+            const response = await fetch(`https://cyzill-api.onrender.com/api/property/properties/user/${username}`);
             const data = await response.json();
             setProperties(data);
         };
@@ -18,7 +18,7 @@ const ListedProperties = ({ username }) => {
 
 
     const handleDelete = async (propertyId) => {
-        const response = await fetch(`http://localhost:5000/api/property/properties/${propertyId}`, {
+        const response = await fetch(`https://cyzill-api.onrender.com/api/property/properties/${propertyId}`, {
             method: 'DELETE',
         });
 
