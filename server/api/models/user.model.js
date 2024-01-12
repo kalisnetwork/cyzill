@@ -19,9 +19,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        validate: {
-            validator: (value) => value.length >= 8,
-        },
+        required: true,
     },
     termsAccepted: {
         type: mongoose.Schema.Types.Mixed,
@@ -32,23 +30,22 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// Hashing the password
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         try {
             this.password = await bcrypt.hash(this.password, 10);
-            next();
         } catch (error) {
-            next(error);
+            throw error;
         }
-    } else {
-        next();
     }
+    next();
 });
 
-userSchema.methods.comparePassword = function (candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
 };
+
 
 const User = mongoose.model('User', userSchema);
 

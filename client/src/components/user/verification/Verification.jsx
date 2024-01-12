@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function App() {
     const [otp, setOtp] = useState('');
+    const navigate = useNavigate()
+    const [confirmationResult, setConfirmationResult] = useState(null);
 
+    const handleVerifyOTP = async () => {
+        try {
+            const result = await confirmationResult.confirm(otp);
+            // User signed in successfully.
+            const user = result.user;
+            console.log(user);
+            // Redirect to home page
+            navigate('/home');
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <main className="min-h-screen flex">
             <div className="flex-1 flex items-center justify-center h-screen">
@@ -30,7 +46,7 @@ export default function App() {
                                 )}
                             />
                         </div>
-                        <button className="w-full px-4 py-4 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">Verify OTP</button>
+                        <button onClick={handleVerifyOTP} className="w-full px-4 py-4 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">Verify OTP</button>
                     </form>
                     <div className="font-medium">
                         <p className="login-action-text">Didn't receive code? <a className="font-medium text-center text-indigo-600 hover:text-indigo-500" href="#">Resend</a></p>

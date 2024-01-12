@@ -58,10 +58,9 @@ const SignUp = () => {
                     termsAccepted: state.termsAccepted ? 'ok' : '',
                 }),
             });
-
             if (response.ok) {
                 setState(prevState => ({ ...prevState, error: 'User created successfully!' }));
-                navigate('/verification');
+                navigate('/login');
             } else {
                 const errorData = await response.json();
                 setState(prevState => ({ ...prevState, error: errorData.message || 'Registration failed.' }));
@@ -79,7 +78,6 @@ const SignUp = () => {
         }));
     }
     const handlePasswordChange = (event) => {
-        // Reset password error messages when the user starts typing
         setState(prevState => ({
             ...prevState,
             passwordErrors: {
@@ -158,6 +156,7 @@ const SignUp = () => {
         return phoneNumberRegex.test(phoneNumber);
     }
     const { passwordsMatch, error, passwordErrors } = state;
+
 
     return (
         <>
@@ -254,12 +253,7 @@ const SignUp = () => {
                                     <p>{error}</p>
                                 </div>
                             )}
-                            <button
-                                type="submit"
-                                className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
-                            >
-                                Create account
-                            </button>
+                            <button type="submit" className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">Create account</button>
                         </form>
                     </div>
                 </div>

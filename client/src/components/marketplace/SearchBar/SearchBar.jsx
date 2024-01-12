@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const SearchBar = ({ onSearch, height, placeholderText, googleMapsApiKey }) => {
+const SearchBar = ({ onSearch, height, placeholderText }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const inputRef = useRef(null);
 
@@ -36,7 +36,9 @@ const SearchBar = ({ onSearch, height, placeholderText, googleMapsApiKey }) => {
                         placeholder={placeholderText}
                         value={searchQuery}
                         onChange={handleInputChange}
+                        style={{ width: '100%' }}
                     />
+
                     <button
                         type="submit"
                         className="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full"

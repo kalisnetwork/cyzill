@@ -1,17 +1,14 @@
-// userActions.js
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const BASE_URL = 'https://cyzill-api.onrender.com/api/user';
+import { BASE_URL } from '../config';
 
 export const fetchUserProfile = createAsyncThunk('user/fetchProfile', async () => {
-    const response = await fetch(`${BASE_URL}/profile`);
+    const response = await fetch(`${BASE_URL}/api/user/profile`);
     const data = await response.json();
     return data;
 });
 
 export const updateUserProfile = createAsyncThunk('user/updateProfile', async (updatedData) => {
-    const response = await fetch(`${BASE_URL}/profile`, {
+    const response = await fetch(`${BASE_URL}/api/user/profile`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +20,7 @@ export const updateUserProfile = createAsyncThunk('user/updateProfile', async (u
 });
 
 export const deleteUserProfile = createAsyncThunk('user/deleteProfile', async () => {
-    const response = await fetch(`${BASE_URL}/profile`, {
+    const response = await fetch(`${BASE_URL}/api/user/profile`, {
         method: 'DELETE',
     });
     const data = await response.json();

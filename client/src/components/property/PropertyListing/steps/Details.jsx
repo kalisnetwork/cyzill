@@ -7,6 +7,7 @@ const Details = ({ formData, saveFormData }) => {
     const [carpetArea, setCarpetArea] = useState(formData.carpetArea || '');
     const [constructionYear, setConstructionYear] = useState(formData.constructionYear || '');
     const [totalFloors, setTotalFloors] = useState(formData.totalFloors || '');
+    const [floorNumber, setFloorNumber] = useState(formData.floorNumber || '');
     const [furnishedStatus, setFurnishedStatus] = useState(formData.furnishedStatus || '');
     const [amenities, setAmenities] = useState(formData.amenities || []);
 
@@ -32,10 +33,11 @@ const Details = ({ formData, saveFormData }) => {
         saveFormData({ ...formData, amenities: newAmenities });
     };
 
-
-
     const handleTotalFloorsChange = (e) => {
         saveFormData({ ...formData, totalFloors: e.target.value });
+    };
+    const handleFloorNumberChange = (e) => {
+        saveFormData({ ...formData, floorNumber: e.target.value });
     };
 
     const handleBedroomsChange = (e) => {
@@ -85,6 +87,16 @@ const Details = ({ formData, saveFormData }) => {
                 <div className="mb-4">
                     <label className="block mb-1 font-medium">Total Floors</label>
                     <input type="number" value={formData.totalFloors || ''} onChange={handleTotalFloorsChange} className="w-full border rounded-md px-3 py-2" placeholder="Enter total number of floors" />
+                </div>
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium">Floor Number</label>
+                    <input
+                        type="number"
+                        value={formData.floorNumber || ''}
+                        onChange={handleFloorNumberChange}
+                        className="w-full border rounded-md px-3 py-2"
+                        placeholder="Enter floor number"
+                    />
                 </div>
                 <div className="mb-4">
                     <label className="block mb-1 font-medium">Furnished Status</label>

@@ -20,18 +20,7 @@ export const signup = async (req, res, next) => {
     }
 
     const { username, email, password, phoneNumber, termsAccepted } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const uid = uuidv4(); // Generate a new UUID
-
-    const newUser = new User({
-        uid, // Include the UID in the new user object
-        username,
-        email,
-        password: hashedPassword,
-        phoneNumber,
-        termsAccepted
-    });
+    const newUser = new User({ username, email, password, phoneNumber, termsAccepted });
 
     try {
         await newUser.save();
@@ -42,21 +31,22 @@ export const signup = async (req, res, next) => {
 }
 
 
-
 export const login = async (req, res, next) => {
     const { identifier, password } = req.body; // rename email to identifier
     try {
         // Search for a user with the provided email or phone number
-        const ValidUser = await User.findOne({
-            $or: [{ email: identifier }, { phoneNumber: identifier }]
-        });
+        const ValidUser = await User.findOne({ $or: [{ email: identifier }, { phoneNumber: identifier }] });
+        console.log('Found user:', ValidUser); // Log the found user
         if (!ValidUser) {
             return next(errorHandler(404, 'user not found'));
         }
-        const isMatch = bcrypt.compare(password, ValidUser.password);
+
+        const isMatch = await bcrypt.compare(password, ValidUser.password);
+        console.log('Passwords match:', isMatch); // Log whether the passwords match
         if (!isMatch) {
             return next(errorHandler(401, 'Wrong Credentials'));
         }
+
         const token = jwt.sign({ _id: ValidUser._id }, process.env.JWT_SECRET);
         const { password: pwd, phoneNumber: phone, termsAccepted: tandc, ...others } = ValidUser._doc;
         res.cookie('access_token', token, { httpOnly: true });
@@ -65,8 +55,6 @@ export const login = async (req, res, next) => {
         next(error);
     }
 };
-
-
 
 export const logout = (req, res) => {
     // Clear the access_token cookie

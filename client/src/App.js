@@ -17,12 +17,12 @@ import PrivateRoute from './components/routes/PrivateRoute';
 import ListedProperties from './components/user/ListedProperties/ListedProperties';
 import NotFoundPage from './components/common/NotFoundPage/NotFound';
 
+const libraries = ['places'];
 function App() {
   const location = useLocation();
   const currentUser = useSelector(state => state.user.currentUser);
   const username = currentUser?.others?.username || currentUser?.username
   const showFooter = location.pathname !== '/homes';
-  const libraries = ['places'];
   const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
   return (
     <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>

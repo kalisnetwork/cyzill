@@ -71,21 +71,18 @@ const Media = ({ formData, saveFormData }) => {
                     </div>
                 </div>
                 <div className="w-1/2 pl-2 border border-gray-400 overflow-auto" style={{ maxHeight: '300px' }}>
-                    {/* Display uploaded images */}
                     {media.filter(file => file.type === 'images').map((file, index) => (
                         <div key={index} className="mb-2 relative">
                             <img src={file.url} alt={`Image ${index}`} className="w-full h-32 object-cover" />
                             <AiOutlineClose className="absolute top-0 right-0 m-1 cursor-pointer text-white bg-red-600 " onClick={() => removeFile(index)} />
                         </div>
                     ))}
-                    {/* Display uploaded videos */}
                     {media.filter(file => file.type === 'videos').map((file, index) => (
                         <div key={index} className="mb-2 relative">
                             <video src={file.url} alt={`Video ${index}`} className="w-full h-32 object-cover" controls />
                             <AiOutlineClose className="absolute top-0 right-0 m-1 cursor-pointer text-white bg-red-600 " onClick={() => removeFile(index)} />
                         </div>
                     ))}
-                    {/* Display uploaded panoramas */}
                     {media.filter(file => file.type === 'panoramas').map((file, index) => (
                         <div key={index} className="mb-2 relative">
                             <Pannellum

@@ -10,14 +10,23 @@ const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) =
     const [map, setMap] = useState(null);
     const [selectedProperty, setSelectedProperty] = useState(null);
     const [initialCenter, setInitialCenter] = useState({ lat: 17.422, lng: 78.488 });
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(`${BASE_URL}/api/property/properties`);
             const data = await response.json();
             setProperties(data);
+            if (map) {
+                const bounds = map.getBounds();
+                if (bounds) {
+                    map.fitBounds(bounds);
+                }
+            }
         };
         fetchData();
-    }, []);
+    }, [map]);
+
+
 
     const onMapLoad = useCallback((map) => {
         setMap(map);
@@ -67,24 +76,28 @@ const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) =
                     position={{ lat: property.location.lat, lng: property.location.lng }}
                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                 >
-                    <div style={{
-                        backgroundColor: '#A020F0',
-                        color: '#ffffff',
-                        borderRadius: '15px',
-                        padding: '5px 10px',
-                        width: '50px',
-                        height: '20px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                    }}>
+                    <div
+                        style={{
+                            backgroundColor: '#A020F0',
+                            color: '#ffffff',
+                            borderRadius: '15px',
+                            padding: '5px 10px',
+                            width: '50px',
+                            height: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                        }}
+                        onClick={() => setSelectedProperty(property)}
+                    >
                         {formatPrice(property.price)}
                     </div>
                 </OverlayView>
             ))}
+
 
             {selectedProperty && (
                 <InfoWindow

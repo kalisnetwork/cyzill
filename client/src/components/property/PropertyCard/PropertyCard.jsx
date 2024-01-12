@@ -3,6 +3,8 @@ import { ModalProvider, Modal } from '../../../context/Modal';
 import './PropertyCard.css';
 import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaChevronLeft, FaChevronRight, FaRegUser } from 'react-icons/fa';
 import PropertyDetails from './PropertyDetails';
+import moment from 'moment';
+
 
 const PropertyCard = ({ property, smallSize, onPropertyClick }) => {
     const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -69,7 +71,9 @@ const PropertyCard = ({ property, smallSize, onPropertyClick }) => {
                             <FaChevronRight />
                         </div>
                     </div>
-                    <div className="posted-on-overlay">{new Date(property.createdAt).toLocaleDateString()}</div>
+                    <div className="posted-on-overlay">
+                        {moment(new Date(property.createdAt)).fromNow()}
+                    </div>
                     <div className="property-details">
                         <div className="listing-details">
                             <div className="price-details">

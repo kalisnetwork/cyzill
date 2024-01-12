@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchUserProfile, updateUserProfile, deleteUserProfile } from '../../../actions/userActions.js';
+import { updateUserProfile, deleteUserProfile } from '../../../actions/userActions.js';
+import { FiEdit, FiTrash } from 'react-icons/fi';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getAuth, updateProfile } from 'firebase/auth';
+import { app } from "../../../firebase.js"
+import { BASE_URL } from '../../../config.js';
 
 const Profile = () => {
     const { currentUser } = useSelector(state => state.user);
@@ -15,56 +20,52 @@ const Profile = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     useEffect(() => {
         // Fetch user profile when the component mounts
-        dispatch(fetchUserProfile());
+        // dispatch(fetchUserProfile());
     }, [dispatch]);
+    const uploadImage = async (imageFile) => {
+        const storage = getStorage(app);
+        const storageRef = ref(storage, `users / ${username} / media / images / ${imageFile.name}`);
+        await uploadBytes(storageRef, imageFile);
+        const photoURL = await getDownloadURL(storageRef);
+        return photoURL;
+    };
 
-    const handleUpdateProfile = () => {
-        // Update user profile
-        dispatch(updateUserProfile({ username, email, phoneNumber, photo }));
+    const handleUpdateProfile = async () => {
+        // const newPhotoURL = newPhoto ? await uploadImage(newPhoto) : photo;
+        // dispatch(updateUserProfile({ username, email, phoneNumber, photo: newPhotoURL }));
     };
 
     const handleDeleteProfile = () => {
-        // Delete user profile
         dispatch(deleteUserProfile());
     };
 
     const handleUpdatePassword = () => {
-        // Handle password update logic here
-        // Validate the passwords and perform password update
         if (newPassword === confirmPassword) {
-            // Dispatch action to update password or perform necessary logic
-            console.log('Updating password...');
+            console.log('Updating password and profile...');
+            handleUpdateProfile();
         } else {
             console.log('New password and confirm password do not match.');
         }
     };
 
-    if (!currentUser) {
-        return <div>Loading...</div>;
-    }
-
     return (
-        <div className="bg-white w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-[#161931]">
-            <aside className="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
-                <div className="sticky flex flex-col gap-2 p-4 text-sm border-r border-indigo-100 top-12">
-                    <h2 className="pl-3 mb-4 text-2xl font-semibold">Settings</h2>
-                    <Link to="/public-profile" className="flex items-center px-3 py-2.5 font-bold bg-white text-indigo-900 border rounded-full">
-                        Profile Settings
-                    </Link>
-                    <Link to="/account-settings" className="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full">
-                        Account Settings
-                    </Link>
-                    <Link to="/password-settings" className="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full">
-                        Password Settings
-                    </Link>
-                </div>
-            </aside>
+        <div className="bg-white w-full flex flex-col gap-5 px-3 justify-center md:px-16 lg:px-28 md:flex-row text-[#161931]">
             <main className="w-full min-h-screen p-4 md:w-2/3 lg:w-3/4">
                 <h2 className="text-xl font-bold">Public Profile</h2>
-                <div className="flex flex-col items-center mt-8 space-y-5">
+                <div className="relative flex flex-col items-center mt-8 space-y-5">
                     <img className="w-40 h-40 rounded-full" src={photo} alt="Avatar" />
-                    <button onClick={() => setPhoto(prompt('Enter new photo URL'))} className="py-3 px-7 text-base font-medium bg-gray-200 rounded-lg">Change picture</button>
-                    <button onClick={handleDeleteProfile} className="py-3 px-7 text-base font-medium bg-gray-200 rounded-lg">Delete picture</button>
+                    <label htmlFor="photoInput" className="absolute bottom-0 left-0 py-3 px-7 text-base font-medium bg-gray-200 rounded-lg cursor-pointer">
+                        <FiEdit />
+                    </label>
+                    <button onClick={handleDeleteProfile} className="absolute bottom-0 right-0 py-3 px-7 text-base font-medium bg-gray-200 rounded-lg">
+                        <FiTrash />
+                    </button>
+                    <input
+                        type="file"
+                        onChange={(e) => setPhoto(e.target.files[0])}
+                        id="photoInput"
+                        className="hidden"
+                    />
                 </div>
                 <div className="flex flex-col items-center w-full mt-8 space-y-2">
                     <div className="w-full">

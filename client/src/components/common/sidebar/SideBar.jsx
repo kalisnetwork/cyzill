@@ -16,7 +16,7 @@ const SideBar = ({ isOpen, onClose }) => {
                 <div className="flex items-center p-2 space-x-4">
                     <img src={currentUser?.others?.photo || currentUser?.photo} alt="" className="w-10 h-10 rounded-full dark:bg-gray-500" onError={(e) => { e.target.onerror = null; e.target.src = "default_image_url"; }} />
                     <div>
-                        <h2 className="text-md font-semibold">{currentUser?.username}</h2>
+                        <h2 className="text-md font-semibold">{currentUser?.username || currentUser?.others.username}</h2>
                         <span className="flex items-center space-x-1">
                             <Link to={"/profile"} onClick={onClose} className="text-xs hover:underline dark:text-gray-400">View profile</Link>
                         </span>

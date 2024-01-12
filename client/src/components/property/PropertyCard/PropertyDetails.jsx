@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaRegUser } from 'react-icons/fa';
+import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaRegUser, FaShareAlt, FaEye, FaMapPin, FaTimes } from 'react-icons/fa';
 import { Modal, ModalProvider } from '../../../context/Modal.js';
 import ImageGallery from './ImageGallery';
 
-const PropertyDetails = ({ property }) => {
+const PropertyDetails = ({ property, onClose }) => {
     const [activeImage, setActiveImage] = useState(0);
     const [showGallery, setShowGallery] = useState(false);
 
@@ -15,35 +15,45 @@ const PropertyDetails = ({ property }) => {
     const handleCloseGallery = () => {
         setShowGallery(false);
     };
-
     return (
         <ModalProvider>
             {property ? (
                 <div className="h-full bg-white p-4">
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-3xl font-bold mb-4">Property Details</h1>
+                        <button onClick={onClose} className="btn btn-primary">
+                            <FaTimes />
+                        </button>
+                    </div>
                     <div className="property-details-modal flex flex-col h-full">
                         <div className="flex-1 overflow-y-auto">
                             <div className="property-card-details flex gap-2 cursor-pointer">
                                 <div className="w-1/2 relative h-[310px]">
-                                    <img
-                                        className="h-full w-full object-cover cursor-pointer"
-                                        src={property.photos[activeImage]}
-                                        alt={`Property ${property._id}`}
-                                        onClick={() => handleImageClick(activeImage)}
-                                    />
+                                    <img className="h-full w-full object-cover cursor-pointer" src={property.photos[activeImage]} alt={`Property ${property._id}`} onClick={() => handleImageClick(activeImage)} />
                                     <div className="absolute inset-0 bg-black opacity-0 hover:opacity-20 transition-opacity duration-300" />
                                 </div>
                                 <div className="w-1/2 grid grid-cols-2 gap-2">
                                     {property.photos.slice(1, 5).map((image, index) => (
                                         <div key={index} onClick={() => handleImageClick(index + 1)} className="relative">
-                                            <img
-                                                className="h-[150px] w-full object-cover cursor-pointer"
-                                                src={image}
-                                                alt={`Property ${property._id}`}
-                                            />
+                                            <img className="h-[150px] w-full object-cover cursor-pointer" src={image} alt={`Property ${property._id}`} />
                                             <div className="absolute inset-0 bg-black opacity-0 hover:opacity-20 transition-opacity duration-300" />
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+                            <div className="buttons mt-4 flex gap-2">
+                                <button className="btn btn-primary flex items-center">
+                                    <FaShareAlt className="mr-2" />
+                                    Share
+                                </button>
+                                <button className="btn btn-primary flex items-center">
+                                    <FaEye className="mr-2" />
+                                    View Contact
+                                </button>
+                                <button className="btn btn-primary flex items-center">
+                                    <FaMapPin className="mr-2" />
+                                    Location
+                                </button>
                             </div>
                             <div className="property-info p-4">
                                 <div className="listing-details">
@@ -89,16 +99,11 @@ const PropertyDetails = ({ property }) => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                     {showGallery && (
                         <Modal onClose={handleCloseGallery}>
-                            <ImageGallery
-                                images={property.photos}
-                                activeImage={activeImage}
-                                setActiveImage={setActiveImage}
-                                setShowGallery={setShowGallery}
-                            />
+                            <ImageGallery images={property.photos} activeImage={activeImage} setActiveImage={setActiveImage} setShowGallery={setShowGallery} />
                         </Modal>
                     )}
                 </div>

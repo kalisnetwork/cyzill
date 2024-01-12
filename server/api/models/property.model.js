@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 
 const propertySchema = new mongoose.Schema({
+    phoneNumber: {
+        type: String,
+    },
+    photo: {
+        type: String,
+        required: true
+    },
+
     username: {
         type: String,
         required: true
@@ -18,6 +26,9 @@ const propertySchema = new mongoose.Schema({
     flatsInSociety: {
         type: String,
     },
+    totalFlats: {
+        type: String,
+    },
     location: {
         lat: Number,
         lng: Number,
@@ -33,6 +44,9 @@ const propertySchema = new mongoose.Schema({
         type: Number
     },
     totalFloors: {
+        type: Number
+    },
+    floorNumber: {
         type: Number
     },
     furnishedStatus: {

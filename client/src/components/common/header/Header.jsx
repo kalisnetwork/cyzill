@@ -29,6 +29,12 @@ const Header = () => {
         setActiveDropdown(idx);
     };
 
+    const handleLinkClick = () => {
+        setState(false);
+        setMenuOpen(false);
+        setActiveDropdown(null);
+    };
+
     console.log('Current User:', currentUser);
 
     return (
@@ -59,10 +65,7 @@ const Header = () => {
                                                                 <ul className="mt-4 space-y-1">
                                                                     {dropdownItem.navs.map((navItem, idx) => (
                                                                         <li key={idx} className="group">
-                                                                            <Link to={navItem.path} onClick={() => {
-                                                                                setState(false);
-                                                                                setMenuOpen(false);
-                                                                            }} className="flex gap-3 items-center">
+                                                                            <Link to={navItem.path} onClick={() => handleLinkClick()} className="flex gap-3 items-center">
                                                                                 <div>
                                                                                     <span className="text-indigo-600 group-hover:underline text-sm font-medium md:text-sm">{navItem.title}</span>
                                                                                 </div>

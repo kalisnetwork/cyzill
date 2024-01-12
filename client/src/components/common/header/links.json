@@ -5,41 +5,7 @@
       "navs": [
         {
           "title": "Homes For Sale",
-          "path": "/homes/for-sale"
-        },
-        {
-          "title": "Open Houses",
-          "path": "/homes/open-houses"
-        },
-        {
-          "title": "Coming Soon",
-          "path": "/homes/coming-soon"
-        }
-      ]
-    },
-    {
-      "label": "Farmville homes for sale",
-      "navs": [
-        {
-          "title": "Homes For Sale",
-          "path": "/homes/for-sale"
-        },
-        {
-          "title": "Open Houses",
-          "path": "/homes/open-houses"
-        },
-        {
-          "title": "Coming Soon",
-          "path": "/homes/coming-soon"
-        }
-      ]
-    },
-    {
-      "label": "Farmville homes for sale",
-      "navs": [
-        {
-          "title": "Homes For Sale",
-          "path": "/homes/for-sale"
+          "path": "/homes?saleOrRent=sell"
         },
         {
           "title": "Open Houses",
@@ -77,7 +43,7 @@
       "navs": [
         {
           "title": "Houses for Rent",
-          "path": "/homes/for-sale"
+          "path": "/homes?saleOrRent=rent"
         },
         {
           "title": "Rental Buildings",
@@ -114,16 +80,6 @@
       "navs": "RentNavs"
     },
     {
-      "title": "Home Loans",
-      "path": "/home-loans",
-      "isDrapdown": false
-    },
-    {
-      "title": "Agent Finder",
-      "path": "/agent-finder",
-      "isDrapdown": false
-    },
-    {
       "title": "Help",
       "path": "/help",
       "isDrapdown": false
@@ -131,16 +87,8 @@
   ],
   "userLinks": [
     {
-      "title": "Dashboard",
-      "path": "/dashboard"
-    },
-    {
       "title": "Profile",
       "path": "/profile"
-    },
-    {
-      "title": "Settings",
-      "path": "/settings"
     },
     {
       "title": "My Listings",
