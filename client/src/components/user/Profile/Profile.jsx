@@ -11,9 +11,9 @@ import { BASE_URL } from '../../../config.js';
 const Profile = () => {
     const { currentUser } = useSelector(state => state.user);
     const dispatch = useDispatch();
-    const [username, setUsername] = useState(currentUser.username);
-    const [email, setEmail] = useState(currentUser.email);
-    const [phoneNumber, setPhoneNumber] = useState(currentUser.phoneNumber);
+    const [username, setUsername] = useState(currentUser?.username || currentUser?.others?.username);
+    const [email, setEmail] = useState(currentUser?.email || currentUser?.others?.email);
+    const [phoneNumber, setPhoneNumber] = useState(currentUser?.phoneNumber || currentUser?.others?.phoneNumber);
     const [photo, setPhoto] = useState(currentUser?.others?.photo || currentUser?.photo);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');

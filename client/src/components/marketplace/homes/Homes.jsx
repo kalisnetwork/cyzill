@@ -20,6 +20,7 @@ const Homes = () => {
         propertyType: '',
         amenities: [],
     });
+    const [mapIsVisible, setMapIsVisible] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -64,7 +65,7 @@ const Homes = () => {
         });
 
         setVisibleProperties(filteredProperties.slice(0, displayCount));
-    }, [filters, propertyData, displayCount]);
+    }, [filters, propertyData, displayCount, mapIsVisible]);
 
 
 
@@ -106,9 +107,9 @@ const Homes = () => {
                             <div className="py-4">
                                 <p className="text-lg font-semibold text-gray-700">Real Estate & Homes For Sale</p>
                             </div>
-                            {visibleProperties.length === 0 && (
+                            {mapIsVisible && visibleProperties.length === 0 && (
                                 <div className="no-properties-found-message text-lg">
-                                    We couldn't find a property in this area.
+                                    We couldn't find any property
                                 </div>
                             )}
                             {showModal && (
@@ -129,7 +130,6 @@ const Homes = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );
