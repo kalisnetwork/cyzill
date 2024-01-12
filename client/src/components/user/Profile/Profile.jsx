@@ -18,6 +18,7 @@ const Profile = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    console.log(phoneNumber)
     useEffect(() => {
         // Fetch user profile when the component mounts
         // dispatch(fetchUserProfile());

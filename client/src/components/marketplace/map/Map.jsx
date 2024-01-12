@@ -71,28 +71,22 @@ const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) =
             onBoundsChanged={debouncedOnBoundsChanged}
         >
             {properties.map((property, index) => (
-                <OverlayView
-                    key={index}
-                    position={{ lat: property.location.lat, lng: property.location.lng }}
-                    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                >
-                    <div
-                        style={{
-                            backgroundColor: '#A020F0',
-                            color: '#ffffff',
-                            borderRadius: '15px',
-                            padding: '5px 10px',
-                            width: '50px',
-                            height: '20px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis'
-                        }}
-                        onClick={() => setSelectedProperty(property)}
-                    >
+                <OverlayView key={index} position={{ lat: property.location.lat, lng: property.location.lng }} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} >
+                    <div style={{
+                        backgroundColor: property.forDetails === 'sell' ? '#A020F0' : '#FF0000',
+                        color: '#ffffff',
+                        borderRadius: '15px',
+                        padding: '5px 10px',
+                        width: '50px',
+                        height: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                    }}
+                        onClick={() => setSelectedProperty(property)} >
                         {formatPrice(property.price)}
                     </div>
                 </OverlayView>

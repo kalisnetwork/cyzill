@@ -18,10 +18,8 @@ export const signup = async (req, res, next) => {
     if (error) {
         return res.status(400).json({ message: 'Invalid input!', error: error.details[0].message });
     }
-
     const { username, email, password, phoneNumber, termsAccepted } = req.body;
     const newUser = new User({ username, email, password, phoneNumber, termsAccepted });
-
     try {
         await newUser.save();
         res.status(200).json({ message: 'User created successfully!' });
@@ -30,85 +28,107 @@ export const signup = async (req, res, next) => {
     }
 }
 
-
 export const login = async (req, res, next) => {
-    const { identifier, password } = req.body; // rename email to identifier
+    const { identifier, password } = req.body;
     try {
-        // Search for a user with the provided email or phone number
         const ValidUser = await User.findOne({ $or: [{ email: identifier }, { phoneNumber: identifier }] });
-        console.log('Found user:', ValidUser); // Log the found user
         if (!ValidUser) {
             return next(errorHandler(404, 'user not found'));
         }
-
         const isMatch = await bcrypt.compare(password, ValidUser.password);
-        console.log('Passwords match:', isMatch); // Log whether the passwords match
         if (!isMatch) {
             return next(errorHandler(401, 'Wrong Credentials'));
         }
-
         const token = jwt.sign({ _id: ValidUser._id }, process.env.JWT_SECRET);
-        const { password: pwd, phoneNumber: phone, termsAccepted: tandc, ...others } = ValidUser._doc;
+        const { password: pwd, ...rest } = ValidUser._doc;
         res.cookie('access_token', token, { httpOnly: true });
-        res.status(200).json({ others });
+        res.status(200).json(rest);
     } catch (error) {
         next(error);
     }
 };
 
 export const logout = (req, res) => {
-    // Clear the access_token cookie
     res.cookie('access_token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(200).json({ message: 'Logged out successfully' });
 };
-
 
 export const google = async (req, res, next) => {
     try {
         const { email, name, photo, phoneNumber } = req.body;
-
-        // Check if the user exists
         let user = await User.findOne({ email });
-
         if (user) {
-            // If user already exists, generate token and respond with user details
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
             const { password: pass, ...rest } = user._doc;
             res.cookie('access_token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(200).json(rest);
         } else {
-            // If user doesn't exist, create a new user
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
             const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
-
-            // Generate a unique username based on the name
             const username = name.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-4);
-
-            const uid = uuidv4(); // Generate a new UUID
-
-            // Create the new user with avatar field
-            let newUser = {
-                uid, // Include the UID in the new user object
-                username,
-                email,
-                password: hashedPassword,
-                photo: photo,
-            };
-
-            // Only add the phoneNumber field if it's not undefined or null.
+            const uid = uuidv4();
+            let newUser = { uid, username, email, password: hashedPassword, photo: photo };
             if (phoneNumber !== undefined && phoneNumber !== null) {
                 newUser.phoneNumber = phoneNumber;
             }
-
             newUser = new User(newUser);
             await newUser.save();
-
-            // Respond with the newly created user details and token
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
             const { password: pass, ...rest } = newUser._doc;
             res.cookie('access_token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(200).json(rest);
         }
     } catch (error) {
-        // Log the error for debugging purposes
         console.error('Error in Google OAuth:', error);
+        next(error);
+    }
+};
+
+export const facebook = async (req, res, next) => {
+    try {
+        const { email, name, photo } = req.body;
+        let user = await User.findOne({ email });
+        if (user) {
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+            const { password: pass, ...rest } = user._doc;
+            res.cookie('access_token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(200).json(rest);
+        } else {
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+            const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+            const username = name.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-4);
+            const uid = uuidv4();
+            let newUser = { uid, username, email, password: hashedPassword, photo: photo };
+            newUser = new User(newUser);
+            await newUser.save();
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+            const { password: pass, ...rest } = newUser._doc;
+            res.cookie('access_token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(200).json(rest);
+        }
+    } catch (error) {
+        console.error('Error in Facebook OAuth:', error);
+        next(error);
+    }
+};
+
+export const apple = async (req, res, next) => {
+    try {
+        const { email, name, photo } = req.body;
+        let user = await User.findOne({ email });
+        if (user) {
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+            const { password: pass, ...rest } = user._doc;
+            res.cookie('access_token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(200).json(rest);
+        } else {
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+            const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+            const username = name.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-4);
+            const uid = uuidv4();
+            let newUser = { uid, username, email, password: hashedPassword, photo: photo };
+            newUser = new User(newUser);
+            await newUser.save();
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+            const { password: pass, ...rest } = newUser._doc;
+            res.cookie('access_token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(200).json(rest);
+        }
+    } catch (error) {
+        console.error('Error in Apple OAuth:', error);
         next(error);
     }
 };
