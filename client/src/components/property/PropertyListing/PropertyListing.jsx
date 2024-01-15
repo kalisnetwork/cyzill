@@ -25,47 +25,41 @@ function reducer(state, action) {
         case 'saveFormData':
             return { ...state, formData: { ...state.formData, ...action.data, location: { ...state.formData.location, ...action.data.location } } };
         default:
-            throw new Error();
+            return state;
     }
 }
 
-
+const steps = {
+    1: { component: Description, name: 'Description' },
+    2: { component: Media, name: 'Media' },
+    3: { component: Location, name: 'Location' },
+    4: { component: Details, name: 'Details' },
+    5: { component: Payment, name: 'Payment' },
+};
 
 const PropertyListing = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const { step, formData } = state;
+
     const nextStep = () => {
-        if (state.step < Object.keys(stepComponents).length) {
+        if (step < Object.keys(steps).length) {
             dispatch({ type: 'nextStep' });
         }
     };
+
     const previousStep = () => dispatch({ type: 'previousStep' });
 
     const saveFormData = (data) => {
         dispatch({ type: 'saveFormData', data });
-        console.log(state.formData);
+        console.log(formData);
     };
+
     useEffect(() => {
-        console.log(state.formData);
-    }, [state.formData]);
+        console.log(formData);
+    }, [formData]);
 
+    const { component: StepComponent, name } = steps[step];
 
-    const stepComponents = {
-        1: Description,
-        2: Media,
-        3: Location,
-        4: Details,
-        5: Payment,
-    };
-
-    const StepComponent = stepComponents[state.step];
-
-    const stepNames = {
-        1: 'Description',
-        2: 'Media',
-        3: 'Location',
-        4: 'Details',
-        5: 'Payment',
-    };
     const isStepCompleted = () => {
         switch (state.step) {
             case 1:
@@ -86,73 +80,45 @@ const PropertyListing = () => {
         }
     };
 
-
-    const isLastStep = state.step === Object.keys(stepComponents).length;
-
-    const totalSteps = Object.keys(stepComponents).length;
-    const completionPercentage = Math.floor((state.step / totalSteps) * 100);
-
-    useEffect(() => {
-        const handleUnload = (e) => {
-            e.preventDefault();
-            e.returnValue = '';
-        };
-
-        window.addEventListener('beforeunload', handleUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleUnload);
-        };
-    }, []);
-
+    const isLastStep = step === Object.keys(steps).length;
+    const totalSteps = Object.keys(steps).length;
 
     return (
         <div className="p-10 relative">
             <div className="steps">
-                <ol className="grid grid-cols-5 text-sm font-medium text-gray-500">
-                    {Object.keys(stepComponents).map((index) => (
+                <ol className="flex items-center w-full text-sm font-medium text-center text-gray-500">
+                    {Object.keys(steps).map((index) => (
                         <li
                             key={index}
-                            className={`relative flex justify-center ${state.step >= index ? 'text-blue-600' : 'text-gray-500'
-                                }`}
+                            className={`flex md:w-full items-center ${step > index ? 'text-blue-600' : 'text-gray-500'
+                                } after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`}
                         >
                             <span
-                                className={`absolute -bottom-[1.75rem] left-1/2 -translate-x-1/2 rounded-full ${state.step >= index
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-600 text-white'
-                                    }`}
+                                className={`flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500 ${step > index ? 'text-blue-600 dark:text-blue-500' : ''}`}
                             >
-                                <svg
-                                    className="h-5 w-5"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </span>
-
-                            <span className="hidden sm:block">
-                                {stepNames[index]}
+                                {step > index && (
+                                    <svg
+                                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+                                        />
+                                    </svg>
+                                )}
+                                <span className="hidden sm:inline-flex sm:ms-2">{name}</span>
                             </span>
                         </li>
                     ))}
                 </ol>
-                <div className="mt-4 block h-1 w-full rounded-lg bg-gray-200 relative -z-10">
-                    <div
-                        className="absolute top-0 left-0 h-1 bg-blue-500"
-                        style={{ width: `${completionPercentage}%` }}
-                    />
-                </div>
                 <div />
             </div>
-            <StepComponent formData={state.formData} setFormData={saveFormData} saveFormData={saveFormData} />
+            <StepComponent formData={formData} setFormData={saveFormData} saveFormData={saveFormData} />
             <div className="flex justify-between">
-                {state.step !== 1 && (
+                {step !== 1 && (
                     <button onClick={previousStep} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer">
                         Previous
                     </button>
