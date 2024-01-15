@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { getAuth, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { app } from '../../../firebase.js';
