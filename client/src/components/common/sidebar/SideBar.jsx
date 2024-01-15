@@ -1,7 +1,7 @@
 import React from 'react';
 import Logout from '../../auth/Logout/Logout';
 import { Link } from 'react-router-dom';
-import { IoSettingsOutline, IoLogOutOutline, IoHeartOutline, IoCartOutline, IoListOutline, IoHelpCircleOutline, IoClose } from "react-icons/io5";
+import { IoLogOutOutline, IoHeartOutline, IoListOutline, IoHelpCircleOutline, IoClose } from "react-icons/io5";
 import { BsHouseDoor } from "react-icons/bs";
 import './sidebar.css';
 import { useSelector } from 'react-redux';
@@ -31,12 +31,6 @@ const SideBar = ({ isOpen, onClose }) => {
                             </Link>
                         </li>
                         <li>
-                            <Link to={"/orders"} onClick={onClose} className="flex items-center p-2 space-x-3 rounded-md">
-                                <IoCartOutline />
-                                <span>Orders</span>
-                            </Link>
-                        </li>
-                        <li>
                             <Link to={"/wishlist"} onClick={onClose} className="flex items-center p-2 space-x-3 rounded-md">
                                 <IoHeartOutline />
                                 <span>Wishlist</span>
@@ -54,12 +48,6 @@ const SideBar = ({ isOpen, onClose }) => {
                         </ul>
                     </div>
                     <ul className="pt-4 pb-2 space-y-1 text-sm">
-                        <li>
-                            <Link to={"/settings"} onClick={onClose} className="flex items-center p-2 space-x-3 rounded-md">
-                                <IoSettingsOutline />
-                                <span>Settings</span>
-                            </Link>
-                        </li>
                         <li>
                             <Link to="/help" onClick={onClose} className="flex items-center p-2 space-x-3 rounded-md">
                                 <IoHelpCircleOutline />

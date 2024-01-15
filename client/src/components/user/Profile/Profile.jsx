@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { updateUserProfile, deleteUserProfile } from '../../../actions/userActions.js';
 import { FiEdit } from 'react-icons/fi';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getAuth, updateProfile } from 'firebase/auth';
-import { app } from "../../../firebase.js"
-import { BASE_URL } from '../../../config.js';
 
 const Profile = () => {
     const { currentUser } = useSelector(state => state.user);
@@ -26,22 +21,11 @@ const Profile = () => {
         // dispatch(fetchUserProfile());
     }, [dispatch]);
 
-    const uploadImage = async (imageFile) => {
-        const storage = getStorage(app);
-        const storageRef = ref(storage, `users/${username}/media/images/${imageFile.name}`);
-        await uploadBytes(storageRef, imageFile);
-        const photoURL = await getDownloadURL(storageRef);
-        return photoURL;
-    };
-
     const handleUpdateProfile = async () => {
         // const newPhotoURL = newPhoto ? await uploadImage(newPhoto) : photo;
         // dispatch(updateUserProfile({ username, email, phoneNumber, photo: newPhotoURL }));
     };
 
-    const handleDeleteProfile = () => {
-        dispatch(deleteUserProfile());
-    };
 
     const handleUpdatePassword = () => {
         if (newPassword === confirmPassword) {

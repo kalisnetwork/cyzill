@@ -17,37 +17,34 @@ const Map = ({ setSelectedProperties, setVisibleProperties }) => {
             const data = await response.json();
             setProperties(data);
             if (map) {
-                const bounds = map.getBounds();
-                if (bounds) {
-                    map.fitBounds(bounds);
-                }
+                map.fitBounds(map.getBounds());
             }
         };
         fetchData();
     }, [map]);
 
-
-
     const onMapLoad = useCallback((map) => {
         setMap(map);
     }, []);
-
-    const debouncedFunction = debounce((map, properties, setSelectedProperties, setVisibleProperties) => {
-        if (map) {
-            const bounds = map.getBounds();
-            const visibleProperties = properties.filter(property => bounds.contains({ lat: property.location.lat, lng: property.location.lng }));
-            setSelectedProperties(prevProperties => {
-                const uniqueVisibleProperties = visibleProperties.filter(property => {
-                    return !prevProperties.some(prevProperty => prevProperty._id === property._id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedOnBoundsChanged = useCallback(
+        debounce(() => {
+            if (map) {
+                const bounds = map.getBounds();
+                const visibleProperties = properties.filter(property => bounds.contains(property.location));
+                setSelectedProperties(prevProperties => {
+                    const uniqueVisibleProperties = visibleProperties.filter(property => {
+                        return !prevProperties.some(prevProperty => prevProperty._id === property._id);
+                    });
+                    return [...prevProperties, ...uniqueVisibleProperties];
                 });
-                return [...prevProperties, ...uniqueVisibleProperties];
-            });
-            setVisibleProperties(visibleProperties);
-        }
-    }, 300);
+                setVisibleProperties(visibleProperties);
+            }
+        }, 300),
+        [map, properties, setSelectedProperties, setVisibleProperties]
+    );
 
-    const debouncedOnBoundsChanged = useCallback(() => debouncedFunction(map, properties, setSelectedProperties, setVisibleProperties), [map, properties, setSelectedProperties, setVisibleProperties]);
-    function formatPrice(price) {
+    const formatPrice = (price) => {
         if (price >= 10000000) {
             const crore = price / 10000000;
             return `₹ ${crore.toFixed(1)} cr`;
@@ -58,9 +55,7 @@ const Map = ({ setSelectedProperties, setVisibleProperties }) => {
             const thousand = price / 1000;
             return `₹ ${thousand.toFixed(1)} k`;
         }
-    }
-
-
+    };
 
     return (
         <GoogleMap
@@ -73,22 +68,24 @@ const Map = ({ setSelectedProperties, setVisibleProperties }) => {
             onBoundsChanged={debouncedOnBoundsChanged}
         >
             {properties.map((property, index) => (
-                <OverlayView key={index} position={{ lat: property.location.lat, lng: property.location.lng }} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} >
-                    <div style={{
-                        backgroundColor: property.forDetails === 'sell' ? '#A020F0' : '#FF0000',
-                        color: '#ffffff',
-                        borderRadius: '15px',
-                        padding: '5px 10px',
-                        width: '60px',
-                        height: '20px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                    }}
-                        onClick={() => setSelectedProperty(property)} >
+                <OverlayView key={index} position={property.location} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
+                    <div
+                        style={{
+                            backgroundColor: property.forDetails === 'sell' ? '#A020F0' : '#FF0000',
+                            color: '#ffffff',
+                            borderRadius: '15px',
+                            padding: '5px 10px',
+                            width: '60px',
+                            height: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                        }}
+                        onClick={() => setSelectedProperty(property)}
+                    >
                         {formatPrice(property.price)}
                     </div>
                 </OverlayView>
@@ -96,12 +93,11 @@ const Map = ({ setSelectedProperties, setVisibleProperties }) => {
 
             {selectedProperty && (
                 <InfoWindow
-                    position={{ lat: selectedProperty.location.lat, lng: selectedProperty.location.lng }}
+                    position={selectedProperty.location}
                     onCloseClick={() => setSelectedProperty(null)}
                 >
                     <div>
-                        <PropertyCard property={selectedProperty} smallSize={true} onPropertyClick={() => setSelectedProperty(selectedProperty)}
-                        />
+                        <PropertyCard property={selectedProperty} smallSize={true} onPropertyClick={() => setSelectedProperty(selectedProperty)} />
                     </div>
                 </InfoWindow>
             )}

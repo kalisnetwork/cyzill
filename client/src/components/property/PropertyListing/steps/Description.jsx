@@ -5,7 +5,7 @@ const useInput = (initialValue, key, formData, saveFormData) => {
 
     useEffect(() => {
         setValue(formData?.[key] !== undefined ? formData[key] : initialValue);
-    }, [formData]);
+    }, [formData, initialValue, key]);
 
     const handleChange = (e) => {
         if (e && e.target) {
@@ -32,7 +32,7 @@ const Description = ({ formData, saveFormData }) => {
     const [description, setDescriptionChange] = useInput('Default description', 'description', formData, saveFormData);
     const [personalDetails, handlePersonalDetailsChange] = useInput('', 'personalDetails', formData, saveFormData);
     const [forDetails, handleForDetailsChange] = useInput('', 'forDetails', formData, saveFormData);
-    const [propertyType, handlePropertyTypeChange, resetPropertyType] = useInput('', 'propertyType', formData, saveFormData);
+    const [propertyType, handlePropertyTypeChange] = useInput('', 'propertyType', formData, saveFormData);
     const [totalFlats, handleTotalFlatsChange, resetTotalFlats] = useInput('', 'totalFlats', formData, saveFormData);
     const [warning, setWarning] = useState('');
     const maxDescriptionLength = 1000;
@@ -57,7 +57,7 @@ const Description = ({ formData, saveFormData }) => {
         if (propertyType !== 'flat') {
             resetTotalFlats();
         }
-    }, [propertyType]);
+    }, [propertyType, resetTotalFlats]);
 
     return (
         <>

@@ -81,7 +81,6 @@ const PropertyListing = () => {
     };
 
     const isLastStep = step === Object.keys(steps).length;
-    const totalSteps = Object.keys(steps).length;
 
     return (
         <div className="p-10 relative">
