@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow } from "@react-google-maps/api";
 import PropertyCard from '../../property/PropertyCard/PropertyCard';
 import { debounce } from 'lodash';
 import { OverlayView } from "@react-google-maps/api";
 import { BASE_URL } from "../../../config";
 
-const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) => {
+const Map = ({ setSelectedProperties, setVisibleProperties }) => {
     const [properties, setProperties] = useState([]);
     const [map, setMap] = useState(null);
     const [selectedProperty, setSelectedProperty] = useState(null);
-    const [initialCenter, setInitialCenter] = useState({ lat: 17.422, lng: 78.488 });
+    const [initialCenter] = useState({ lat: 17.422, lng: 78.488 });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,18 +47,20 @@ const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) =
     }, 300);
 
     const debouncedOnBoundsChanged = useCallback(() => debouncedFunction(map, properties, setSelectedProperties, setVisibleProperties), [map, properties, setSelectedProperties, setVisibleProperties]);
-
     function formatPrice(price) {
         if (price >= 10000000) {
             const crore = price / 10000000;
-            return `${crore.toFixed(1)} cr`;
+            return `₹ ${crore.toFixed(1)} cr`;
         } else if (price >= 100000) {
             const lakh = price / 100000;
-            return `${lakh.toFixed(1)} lac`;
+            return `₹ ${lakh.toFixed(1)} lac`;
         } else {
-            return `${price}`;
+            const thousand = price / 1000;
+            return `₹ ${thousand.toFixed(1)} k`;
         }
     }
+
+
 
     return (
         <GoogleMap
@@ -77,7 +79,7 @@ const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) =
                         color: '#ffffff',
                         borderRadius: '15px',
                         padding: '5px 10px',
-                        width: '50px',
+                        width: '60px',
                         height: '20px',
                         display: 'flex',
                         alignItems: 'center',
@@ -91,7 +93,6 @@ const Map = ({ setSelectedProperties, setVisibleProperties, onPropertyClick }) =
                     </div>
                 </OverlayView>
             ))}
-
 
             {selectedProperty && (
                 <InfoWindow
