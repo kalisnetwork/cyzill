@@ -4,8 +4,12 @@ import Map from '../map/Map';
 import Filters from '../filters/Filters';
 import { BASE_URL } from "../../../config";
 import ContactForm from "./ContactForm";
+import { debounce } from 'lodash';
+import { Navigate, useSearchParams } from "react-router-dom";
 
 const Homes = () => {
+    const [searchParams] = useSearchParams();
+    const saleOrRent = searchParams.get('saleOrRent') || 'sell';
     const [selectedProperties, setSelectedProperties] = useState([]);
     const [visibleProperties, setVisibleProperties] = useState([]);
     const [propertyData, setPropertyData] = useState(null);
@@ -19,8 +23,16 @@ const Homes = () => {
         bathrooms: '',
         propertyType: '',
         amenities: [],
+        saleOrRent: searchParams.get('saleOrRent') || 'sell',
     });
-    const [mapIsVisible, setMapIsVisible] = useState(true);
+    const [mapIsVisible] = useState(true);
+
+    useEffect(() => {
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            saleOrRent: searchParams.get('saleOrRent') || 'sell',
+        }));
+    }, [searchParams]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +40,7 @@ const Homes = () => {
                 setIsLoading(true);
                 const response = await fetch(`${BASE_URL}/api/property/properties`);
                 const data = await response.json();
-                console.log('propertyData:', data);
+                console.log('Fetched data:', data);
                 setPropertyData(data);
                 setIsLoading(false);
             } catch (error) {
@@ -36,8 +48,11 @@ const Homes = () => {
                 setIsLoading(false);
             }
         };
-        fetchData();
-    }, []);
+
+        if (!propertyData) {
+            fetchData();
+        }
+    }, [propertyData]);
 
     useEffect(() => {
         const modalTimeout = setTimeout(() => {
@@ -54,9 +69,15 @@ const Homes = () => {
 
         const filteredProperties = propertyData.filter(property => {
             return (
-                (!filters.price || property.price <= filters.price[1]) &&
-                (!filters.bedrooms || (filters.bedrooms === '5+' ? property.bedrooms >= 5 : property.bedrooms == filters.bedrooms)) &&
-                (!filters.bathrooms || (filters.bathrooms === '5+' ? property.bathrooms >= 5 : property.bathrooms == filters.bathrooms)) &&
+                (!filters.price || (property.price >= filters.price[0] && property.price <= filters.price[1])) &&
+                (!filters.bedrooms ||
+                    (filters.bedrooms === 'Any' ? true :
+                        filters.bedrooms === '5+' ? property.bedrooms >= 5 :
+                            property.bedrooms == filters.bedrooms)) &&
+                (!filters.bathrooms ||
+                    (filters.bathrooms === 'Any' ? true :
+                        filters.bathrooms === '5+' ? property.bathrooms >= 5 :
+                            property.bathrooms == filters.bathrooms)) &&
                 (!filters.propertyType || property.propertyType === filters.propertyType) &&
                 (!filters.amenities.length || filters.amenities.every(amenity => property.amenities.includes(amenity))) &&
                 property.location.address.toLowerCase().includes(filters.searchTerm.toLowerCase()) &&
@@ -64,44 +85,51 @@ const Homes = () => {
             );
         });
 
+        console.log('Filtered properties:', filteredProperties);
+
         setVisibleProperties(filteredProperties.slice(0, displayCount));
     }, [filters, propertyData, displayCount, mapIsVisible]);
-
-
 
     const handleFilterChange = (filterName, value) => {
         setFilters((prevFilters) => ({ ...prevFilters, [filterName]: value }));
     };
 
     const handleSearch = (term) => {
-        setFilters(prevFilters => ({ ...prevFilters, searchTerm: term }));
+        setFilters((prevFilters) => ({ ...prevFilters, searchTerm: term }));
     };
 
-    const handleScroll = (e) => {
+    const handleScroll = debounce((e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
         if (bottom) {
             setDisplayCount(prevCount => prevCount + 6);
         }
-    }
+    }, 300);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div className="loading-spinner">Loading...</div>;
     }
 
-    if (!propertyData) {
-        return null;
+    if (!propertyData || propertyData.length === 0) {
+        return <div>No properties found.</div>;
     }
 
     return (
         <div onScroll={handleScroll} style={{ height: '100vh', overflow: 'auto' }}>
             <div className="w-full h-screen flex flex-col">
                 <div className="flex items-center justify-start p-2 border border-gray-200">
-                    <Filters onSearch={handleSearch} onFilterChange={handleFilterChange} />
+                    <Filters onSearch={handleSearch} onFilterChange={handleFilterChange} saleOrRent={saleOrRent} />
                 </div>
                 <div className="flex-grow overflow-auto">
                     <div className="flex flex-row h-full overflow-auto">
                         <div className="w-1/2 h-full overflow-auto lg:block hidden">
-                            <Map setSelectedProperties={setSelectedProperties} setVisibleProperties={setVisibleProperties} />
+                            <Map
+                                setSelectedProperties={setSelectedProperties}
+                                setVisibleProperties={setVisibleProperties}
+                                filters={filters}
+                                propertyData={propertyData}
+                                visibleProperties={visibleProperties}
+                                saleOrRent={saleOrRent}
+                            />
                         </div>
                         <div className="w-full lg:w-1/2 h-full overflow-auto p-2">
                             <div className="py-4">

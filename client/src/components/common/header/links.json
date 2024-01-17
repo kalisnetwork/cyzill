@@ -1,7 +1,7 @@
 {
   "BuyNavs": [
     {
-      "label": "Farmville homes for sale",
+      "label": "Homes for sale",
       "navs": [
         {
           "title": "Homes For Sale",
@@ -52,10 +52,6 @@
         {
           "title": "Apartments for Rent",
           "path": "/homes/coming-soon"
-        },
-        {
-          "title": "Homes For Sale",
-          "path": "/homes/for-sale"
         }
       ]
     }
@@ -63,7 +59,7 @@
   "navigation": [
     {
       "title": "Buy",
-      "path": "/homes",
+      "path": "/homes?saleOrRent=sell",
       "isDrapdown": true,
       "navs": "BuyNavs"
     },
@@ -75,7 +71,7 @@
     },
     {
       "title": "Rent",
-      "path": "/homes/for-rental",
+      "path": "/homes?saleOrRent=rent",
       "isDrapdown": true,
       "navs": "RentNavs"
     },

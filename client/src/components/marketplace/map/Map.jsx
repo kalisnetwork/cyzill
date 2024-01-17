@@ -5,43 +5,28 @@ import { debounce } from 'lodash';
 import { OverlayView } from "@react-google-maps/api";
 import { BASE_URL } from "../../../config";
 
-const Map = ({ setSelectedProperties, setVisibleProperties }) => {
-    const [properties, setProperties] = useState([]);
+const Map = ({ setSelectedProperties, setVisibleProperties, filters, propertyData, visibleProperties }) => {
     const [map, setMap] = useState(null);
     const [selectedProperty, setSelectedProperty] = useState(null);
     const [initialCenter] = useState({ lat: 17.422, lng: 78.488 });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(`${BASE_URL}/api/property/properties`);
-            const data = await response.json();
-            setProperties(data);
-            if (map) {
-                map.fitBounds(map.getBounds());
-            }
-        };
-        fetchData();
-    }, [map]);
-
     const onMapLoad = useCallback((map) => {
         setMap(map);
     }, []);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     const debouncedOnBoundsChanged = useCallback(
         debounce(() => {
             if (map) {
                 const bounds = map.getBounds();
-                const visibleProperties = properties.filter(property => bounds.contains(property.location));
-                setSelectedProperties(prevProperties => {
-                    const uniqueVisibleProperties = visibleProperties.filter(property => {
-                        return !prevProperties.some(prevProperty => prevProperty._id === property._id);
-                    });
-                    return [...prevProperties, ...uniqueVisibleProperties];
+                const visibleProperties = propertyData.filter(property => {
+                    return bounds.contains(property.location) &&
+                        (filters.saleOrRent === 'sell' ? property.forDetails === 'sell' : property.forDetails === 'rent');
                 });
+                setSelectedProperties(visibleProperties);
                 setVisibleProperties(visibleProperties);
             }
         }, 300),
-        [map, properties, setSelectedProperties, setVisibleProperties]
+        [map, propertyData, setSelectedProperties, setVisibleProperties, filters]
     );
 
     const formatPrice = (price) => {
@@ -67,7 +52,7 @@ const Map = ({ setSelectedProperties, setVisibleProperties }) => {
             onLoad={onMapLoad}
             onBoundsChanged={debouncedOnBoundsChanged}
         >
-            {properties.map((property, index) => (
+            {visibleProperties.map((property, index) => (
                 <OverlayView key={index} position={property.location} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
                     <div
                         style={{
